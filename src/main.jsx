@@ -68,22 +68,22 @@ class PlanetaryConfigSim extends React.Component {
                             <div className="radObserver">
                                 <form className="form-inline">
                                     <label htmlFor="radObserverPlanetRange">Radius of observer planet's orbit</label>
- <div className="radius-forms">
-                                           <input type="number" size="4"
-                                           className="form-control form-control-sm"
+                                  <div className="radius-forms">
+                                    <input type="number" size="4"
+                                           className="inputs"
                                            step="0.01" name="distance"
                                            min={0.25} max={10}
                                            value={this.state.radiusObserverPlanet}
                                                   onChange={this.onObserverPlanetRadiusChange.bind(this)}/>
- </div>
-<div className="radius-forms">
+                                  </div>
+                                  <div className="radius-forms">
                                     <RangeStepInput name="radiusObserverPlanet"
                                            className="form-control-range ml-2"
                                            value={this.state.radiusObserverPlanet}
                                            onChange={this.onObserverPlanetRadiusChange.bind(this)}
                                            step={0.01}
                                            min={0.25} max={10} />
- </div>
+                                  </div>
 
                                 </form>
 
@@ -92,25 +92,25 @@ class PlanetaryConfigSim extends React.Component {
                             <div className="radTarget">
                                 <form className="form-inline">
                                     <label htmlFor="radTargetPlanetRange">Radius of target planet's orbit</label>
-<div className="radius-forms">
+                                  <div className="radius-forms">
 	    	                    <input type="number" size="4"
-                                           className="form-control form-control-sm"
+                                           className="inputs"
                                            step="0.01" name="distance"
                                            min={0.25} max={10}
                                            value={this.state.radiusTargetPlanet}
                                            onChange={this.onTargetPlanetRadiusChange.bind(this)}/>
-	    </div>
-<div className="radius-forms">
+	                          </div>
+                                  <div className="radius-forms">
                                     <RangeStepInput name="radiusTargetPlanet"
                                            className="form-control-range ml-2"
                                            value={this.state.radiusTargetPlanet}
                                            onChange={this.onTargetPlanetRadiusChange.bind(this)}
                                            step={0.01} min={0.25} max={10} />
-</div>
+                                  </div>
                                 </form>
                             </div>
 
-	{/*                      <div className="presets">
+                          <div className="presets">
                                 <form>
                                     <select className="form-control form-control-sm" onChange={this.onPresetSelect}>
                                         <option value={-1}>Earth</option>
@@ -118,7 +118,7 @@ class PlanetaryConfigSim extends React.Component {
                                         <option value={2}>Venus</option>
                                     </select>
                                 </form>
-				</div> */}
+			  </div>
                         </div>
 
                         <div className="col">

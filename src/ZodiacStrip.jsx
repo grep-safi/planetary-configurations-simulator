@@ -25,7 +25,7 @@ export default class ZodiacStrip extends React.Component {
     render()  {
         return (
             <div className="ZodiacStrip"
-                ref={(thisDiv) => {this.el = thisDiv}} />
+                 ref={(thisDiv) => {this.el = thisDiv;}} />
         );
     }
     componentDidMount() {
@@ -128,10 +128,10 @@ export default class ZodiacStrip extends React.Component {
         targetPlanetImage.anchor.set(0.5);
         targetPlanetImage.width = 30;
         targetPlanetImage.height = 30;
-      targetPlanetContainer.addChild(targetPlanetImage);
+        targetPlanetContainer.addChild(targetPlanetImage);
 
 
-      this.app.stage.addChild(targetPlanetContainer);
+        this.app.stage.addChild(targetPlanetContainer);
 
         return targetPlanetContainer;
     }
@@ -160,9 +160,8 @@ export default class ZodiacStrip extends React.Component {
         targetPos.x -= 600;
         targetPos.y -= 460;
 
-      targetPos.y *= -1;
-      this.updateZIndex(observerPos, targetPos);
-
+        targetPos.y *= -1;
+        this.updateZIndex(observerPos, targetPos);
 
         let targetPlanetAngle = Math.atan2(targetPos.y - observerPos.y, targetPos.x - observerPos.x);
         let sunAngle = Math.atan2(sunPos.y - observerPos.y, sunPos.x - observerPos.x);
