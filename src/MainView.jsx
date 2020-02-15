@@ -111,12 +111,6 @@ export default class MainView extends React.Component {
         cancelAnimationFrame(this.frameId);
     }
     animate() {
-        // I'm guessing that the reason why the outline
-        // of the orbit is overlayed on the planets is due to the
-        // fact that these coontainers are being cleared and redrawn
-        // whereas the observerPlanet container and targetPlanet container are not
-	// being redrawn
-
         this.updateObserverPlanetOrbit();
         this.updateTargetPlanetOrbit();
 
