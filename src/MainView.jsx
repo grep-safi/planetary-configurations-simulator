@@ -5,8 +5,10 @@ import * as PIXI from 'pixi.js';
 const getPlanetPos = function(radius, phase) {
     return new PIXI.Point(
         radius * Math.cos(-phase) + 600,
-        radius * Math.sin(-phase) + 460); // these magic numbers come from this.orbitCenter
+        radius * Math.sin(-phase) + 460
+    );
 };
+
 export default class MainView extends React.Component {
     constructor(props) {
         super(props);
@@ -57,6 +59,9 @@ export default class MainView extends React.Component {
         const me = this;
         this.app.loader.load((loader, resources) => {
             me.resources = resources;
+
+            me.arrowToSun = me.drawArrows ();
+            me.arrowToTarget = me.drawArrows ();
 
             me.earth = me.drawEarth(
                 resources.earth);
@@ -114,10 +119,17 @@ export default class MainView extends React.Component {
         this.updateObserverPlanetOrbit();
         this.updateTargetPlanetOrbit();
 
-        this.observerPlanetContainer.position = getPlanetPos(this.props.radiusObserverPlanet,
-                                                    this.props.observerPlanetAngle);
-        this.targetPlanetContainer.position = getPlanetPos(this.props.radiusTargetPlanet,
-                                                    this.props.targetPlanetAngle);
+        this.observerPlanetContainer.position = getPlanetPos(
+            this.props.radiusObserverPlanet,
+            this.props.observerPlanetAngle
+        );
+
+        this.targetPlanetContainer.position = getPlanetPos(
+            this.props.radiusTargetPlanet,
+            this.props.targetPlanetAngle
+        );
+
+        this.updateArrows ();
 
         if (this.state.isHoveringOnObserverPlanet || this.draggingObserverPlanet) {
             this.observerPlanetHighlight.visible = true;
@@ -133,11 +145,58 @@ export default class MainView extends React.Component {
 
         this.frameId = requestAnimationFrame(this.animate);
     }
-    updateObserverPlanetOrbit() {
-        this.observerPlanetOrbitContainer.clear();
-        this.observerPlanetOrbitContainer.lineStyle(2, 0xffffff);
-        this.observerPlanetOrbitContainer.drawCircle(this.orbitCenter.x, this.orbitCenter.y, this.props.radiusObserverPlanet);
+
+    drawArrows () {
+        const g = new PIXI.Graphics();
+        g.visible = false;
+
+        g.clear();
+        g.lineStyle(2, 0x00FFD2);
+        g.beginFill(0xffe200, 0.7);
+
+        this.app.stage.addChild(g);
+        return g;
     }
+
+    updateArrows () {
+        this.arrowToSun.clear();
+        this.arrowToTarget.clear();
+
+        this.arrowToTarget.moveTo(
+            this.observerPlanetContainer.x,
+            this.observerPlanetContainer.y
+        );
+
+        this.arrowToSun.moveTo(
+            this.observerPlanetContainer.x,
+            this.observerPlanetContainer.y
+        );
+
+        this.arrowToTarget.visible = true;
+        this.arrowToTarget.lineStyle(2, 0x00f2ff);
+        this.arrowToTarget.beginFill(0x00f2ff, 0.7);
+
+        this.arrowToSun.visible = true;
+        this.arrowToSun.lineStyle(2, 0x00f2ff);
+        this.arrowToSun.beginFill(0x00f2ff, 0.7);
+
+        this.arrowToTarget.lineTo(
+            this.targetPlanetContainer.x,
+            this.targetPlanetContainer.y
+        );
+
+        this.arrowToSun.lineTo(
+            this.earth.x,
+            this.earth.y
+        );
+    }
+
+
+    updateObserverPlanetOrbit() {
+                                 this.observerPlanetOrbitContainer.clear();
+                                 this.observerPlanetOrbitContainer.lineStyle(2, 0xffffff);
+                                 this.observerPlanetOrbitContainer.drawCircle(this.orbitCenter.x, this.orbitCenter.y, this.props.radiusObserverPlanet);
+                                 }
     updateTargetPlanetOrbit() {
         this.targetPlanetOrbitContainer.clear();
         this.targetPlanetOrbitContainer.lineStyle(2, 0xffffff);
