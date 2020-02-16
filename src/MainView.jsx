@@ -188,6 +188,14 @@ export default class MainView extends React.Component {
         g.clear();
         g.lineStyle(2, 0x00FFD2);
         g.beginFill(0xffe200, 0.7);
+        g.arc(
+            600,
+            460,
+            200 * 2,
+            Math.PI,
+            -0,
+            true
+        );
 
         this.app.stage.addChild(g);
         return g;
@@ -223,6 +231,17 @@ export default class MainView extends React.Component {
         this.arrowToSun.lineTo(
             this.earth.x,
             this.earth.y
+        );
+
+        this.arrowToTarget.lineStyle(2, 0x00FFD2);
+        this.arrowToTarget.beginFill(0xffe200, 0.7);
+        this.arrowToTarget.arc(
+            600,
+            460,
+            200 * 2,
+            Math.PI,
+            -0,
+            true
         );
     }
 
