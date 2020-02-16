@@ -60,8 +60,6 @@ export default class MainView extends React.Component {
         this.app.loader.load((loader, resources) => {
             me.resources = resources;
 
-            me.arrowToSun = me.drawArrows ();
-            me.arrowToTarget = me.drawArrows ();
 
             me.earth = me.drawEarth(
                 resources.earth);
@@ -70,34 +68,39 @@ export default class MainView extends React.Component {
             me.targetPlanetOrbitContainer = me.drawTargetPlanetOrbit();
 
             me.observerPlanetContainer = me.drawObserverPlanet(
-            resources.observerPlanet, resources.highlight);
+                resources.observerPlanet, resources.highlight);
             me.observerPlanetContainer
-              // events for drag start
-              .on('mousedown', me.onDragStart)
-              .on('touchstart', me.onDragStart)
-              // events for drag end
-              .on('mouseup', me.onDragEnd)
-              .on('mouseupoutside', me.onDragEnd)
-              .on('touchend', me.onDragEnd)
-              .on('touchendoutside', me.onDragEnd)
-              // events for drag move
-              .on('mousemove', me.onObserverPlanetMove)
-              .on('touchmove', me.onObserverPlanetMove);
+            // events for drag start
+                .on('mousedown', me.onDragStart)
+                .on('touchstart', me.onDragStart)
+            // events for drag end
+                .on('mouseup', me.onDragEnd)
+                .on('mouseupoutside', me.onDragEnd)
+                .on('touchend', me.onDragEnd)
+                .on('touchendoutside', me.onDragEnd)
+            // events for drag move
+                .on('mousemove', me.onObserverPlanetMove)
+                .on('touchmove', me.onObserverPlanetMove);
 
             me.targetPlanetContainer = me.drawTargetPlanet(
                 resources.targetPlanet, resources.highlight);
             me.targetPlanetContainer
-              // events for drag start
-              .on('mousedown', me.onDragStart)
-              .on('touchstart', me.onDragStart)
-              // events for drag end
-              .on('mouseup', me.onDragEnd)
-              .on('mouseupoutside', me.onDragEnd)
-              .on('touchend', me.onDragEnd)
-              .on('touchendoutside', me.onDragEnd)
-              // events for drag move
-              .on('mousemove', me.onTargetPlanetMove)
-              .on('touchmove', me.onTargetPlanetMove);
+            // events for drag start
+                .on('mousedown', me.onDragStart)
+                .on('touchstart', me.onDragStart)
+            // events for drag end
+                .on('mouseup', me.onDragEnd)
+                .on('mouseupoutside', me.onDragEnd)
+                .on('touchend', me.onDragEnd)
+                .on('touchendoutside', me.onDragEnd)
+            // events for drag move
+                .on('mousemove', me.onTargetPlanetMove)
+                .on('touchmove', me.onTargetPlanetMove);
+
+
+            me.arrowToSun = me.drawArrows ();
+            me.arrowToTarget = me.drawArrows ();
+
 
             me.start();
         });
