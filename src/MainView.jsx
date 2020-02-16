@@ -60,7 +60,6 @@ export default class MainView extends React.Component {
         this.app.loader.load((loader, resources) => {
             me.resources = resources;
 
-
             me.earth = me.drawEarth(
                 resources.earth);
 
@@ -101,6 +100,8 @@ export default class MainView extends React.Component {
             me.arrowToSun = me.drawArrows ();
             me.arrowToTarget = me.drawArrows ();
 
+            me.observerPlanetName = me.drawText ('earth', me.props.radiusObserverPlanet, false);
+            me.targetPlanetName = me.drawText ('mars', me.props.radiusTargetPlanet, true);
 
             me.start();
         });
@@ -121,6 +122,8 @@ export default class MainView extends React.Component {
     animate() {
         this.updateObserverPlanetOrbit();
         this.updateTargetPlanetOrbit();
+
+        this.updateText();
 
         this.observerPlanetContainer.position = getPlanetPos(
             this.props.radiusObserverPlanet,
@@ -147,6 +150,35 @@ export default class MainView extends React.Component {
         }
 
         this.frameId = requestAnimationFrame(this.animate);
+    }
+
+    drawText(name, bodyRadius, target) {
+        const text = new PIXI.Text(name, {
+            fontFamily: 'Garamond',
+            fontSize: 45,
+            fill: 0x39696,
+            align: 'center'
+        });
+
+        let radius = bodyRadius + 15;
+
+        if (target) {
+            radius = bodyRadius * -1;
+            radius -= 60;
+        }
+
+        text.position.x = 560;
+        text.position.y = 460 + radius;
+        this.app.stage.addChild(text);
+        return text;
+    }
+
+    updateText() {
+        let observerNameY = this.props.radiusObserverPlanet + 15;
+        let targetNameY = this.props.radiusTargetPlanet * -1 - 60;
+
+        this.observerPlanetName.y = 460 + observerNameY;
+        this.targetPlanetName.position.y = 460 + targetNameY;
     }
 
     drawArrows () {
