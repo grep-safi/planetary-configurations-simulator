@@ -9,6 +9,11 @@ const getPlanetPos = function(radius, phase) {
     );
 };
 
+const convertFromAU = function(AUradius) {
+    let pixelRadius = ((AUradius - 0.25) / 9.75) * 550 + 50;
+    return pixelRadius;
+};
+
 export default class MainView extends React.Component {
     constructor(props) {
         super(props);
@@ -136,6 +141,15 @@ export default class MainView extends React.Component {
             this.props.targetPlanetAngle
         );
 
+        // console.log('AU radius of target and observer', this.props.targetAU, this.props.observerAU);
+        // let diffTarget = convertFromAU(this.props.targetAU) - this.props.radiusTargetPlanet;
+        // let diffObserver = convertFromAU(this.props.observerAU) - this.props.radiusObserverPlanet;
+
+        // console.log("to each: ", convertFromAU(this.props.targetAU), this.props.radiusTargetPlanet);
+        // console.log("their own: ", convertFromAU(this.props.observerAU), this.props.radiusObserverPlanet);
+        // console.log("differences: ", diffTarget, diffObserver);
+
+
         this.updateArrows ();
         this.updateArc();
 
@@ -189,11 +203,11 @@ export default class MainView extends React.Component {
 
         elongArc.clear();
         elongArc.lineStyle(2, 0x00FFD2);
-        elongArc.beginFill(0xffe200, 0.7);
+        elongArc.beginFill(0x90f599, 0.7);
         elongArc.arc(
             this.observerPlanetContainer.x,
             this.observerPlanetContainer.y,
-            50,
+            45,
             this.props.targetAngle,
             this.props.sunAngle,
             true
@@ -206,20 +220,46 @@ export default class MainView extends React.Component {
     updateArc() {
         this.elongationArc.clear();
         this.elongationArc.lineStyle(2, 0x00FFD2);
-        this.elongationArc.beginFill(0xffe200, 0.7);
+        this.elongationArc.beginFill(0x90f599, 0.7);
         this.elongationArc.moveTo(this.observerPlanetContainer.x, this.observerPlanetContainer.y);
         this.elongationArc.arc(
             this.observerPlanetContainer.x,
             this.observerPlanetContainer.y,
-            60,
+            45,
             -this.props.targetAngle,
             -this.props.sunAngle,
-            -this.props.sunAngle < 0 && -this.props.sunAngle > -Math.PI
+            this.greaterThan180()
         );
+        // let tar = this.props.targetAngle * 180 / Math.PI;
+        // let sunn = this.props.sunAngle * 180 / Math.PI;
+        // console.log('mars and sun angles: ', tar, sunn);
+    }
 
-        let tar = this.props.targetAngle * 180 / Math.PI;
-        let sunn = this.props.sunAngle * 180 / Math.PI;
-        console.log('mars and sun angles: ', tar, sunn);
+    greaterThan180() {
+        let sunAng = this.props.sunAngle;
+        let targetAng = this.props.targetAngle;
+
+        if (-Math.PI < this.props.sunAngle && this.props.sunAngle < 0) {
+            sunAng += 2 * Math.PI;
+        }
+
+        if (-Math.PI < this.props.targetAngle && this.props.targetAngle < 0) {
+            targetAng += 2 * Math.PI;
+        }
+
+        let differenceInAngles = targetAng - sunAng;
+
+        if (differenceInAngles < 0) {
+            differenceInAngles += 2 * Math.PI;
+        }
+
+        let num = Math.round(differenceInAngles * 180 / Math.PI * 10) / 10;
+
+        if (num > 180) {
+            return true;
+        }
+
+        return false;
     }
 
     drawArrows () {
@@ -267,12 +307,11 @@ export default class MainView extends React.Component {
         );
     }
 
-
     updateObserverPlanetOrbit() {
-                                 this.observerPlanetOrbitContainer.clear();
-                                 this.observerPlanetOrbitContainer.lineStyle(2, 0xffffff);
-                                 this.observerPlanetOrbitContainer.drawCircle(this.orbitCenter.x, this.orbitCenter.y, this.props.radiusObserverPlanet);
-                                 }
+        this.observerPlanetOrbitContainer.clear();
+        this.observerPlanetOrbitContainer.lineStyle(2, 0xffffff);
+        this.observerPlanetOrbitContainer.drawCircle(this.orbitCenter.x, this.orbitCenter.y, this.props.radiusObserverPlanet);
+    }
     updateTargetPlanetOrbit() {
         this.targetPlanetOrbitContainer.clear();
         this.targetPlanetOrbitContainer.lineStyle(2, 0xffffff);

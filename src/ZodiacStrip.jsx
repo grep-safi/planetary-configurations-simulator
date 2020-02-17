@@ -181,10 +181,6 @@ export default class ZodiacStrip extends React.Component {
 
         let elongAngle = targetPlanetAngle - sunAngle;
 
-        let e = elongAngle * 180 / Math.PI;
-        let s = sunAngle * 180 / Math.PI;
-        let t = targetPlanetAngle * 180 / Math.PI;
-
         if (elongAngle < 0) {
             elongAngle += 2 * Math.PI;
         }
