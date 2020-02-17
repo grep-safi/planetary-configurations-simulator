@@ -147,8 +147,8 @@ class PlanetaryConfigSim extends React.Component {
 			  speed={this.state.animationRate}
 			  observerPlanetAngle={this.state.observerPlanetAngle}
 			  targetPlanetAngle={this.state.targetPlanetAngle}
-                          radiusObserverPlanet={this.state.radiusObserverPlanet}
-                          radiusTargetPlanet={this.state.radiusTargetPlanet}
+                          radiusObserverPlanet={this.state.radiusPixelObserver}
+                          radiusTargetPlanet={this.state.radiusPixelTarget}
 			  isPlaying={this.state.isPlaying}
                           stopAnimation={this.stopAnimation}
                           updateAngles={this.updateAngles.bind(this)}
