@@ -166,9 +166,14 @@ export default class ZodiacStrip extends React.Component {
         let targetPlanetAngle = Math.atan2(targetPos.y - observerPos.y, targetPos.x - observerPos.x);
         let sunAngle = Math.atan2(sunPos.y - observerPos.y, sunPos.x - observerPos.x);
 
+        let r = targetPlanetAngle * 180 / Math.PI;
+        let p = sunAngle * 180 / Math.PI;
 
         this.targetPlanetLongitude = targetPlanetAngle;
         this.sunLongitude = sunAngle;
+
+        // console.log('I AM DOOM', targetPlanetAngle, sunAngle);
+        this.props.updateAngles(targetPlanetAngle, sunAngle);
 
         if (-Math.PI < sunAngle && sunAngle < 0) {
             sunAngle += 2 * Math.PI;
@@ -263,7 +268,6 @@ export default class ZodiacStrip extends React.Component {
     let distObsSun = this.getDistance(observer, new PIXI.Point(0, 0));
 
     if (distObsTarget > distObsSun) {
-      console.log(this.props.radiusObserverPlanet);
       this.app.stage.setChildIndex(this.sunZodiacContainer, 2);
       this.app.stage.setChildIndex(this.targetPlanetZodiacContainer, 1);
     } else {

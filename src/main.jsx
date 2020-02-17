@@ -7,26 +7,28 @@ import {forceNumber, radToDeg, degToRad} from './utils';
 import { maxHeaderSize } from 'http';
 
 class PlanetaryConfigSim extends React.Component {
-	constructor(props) {
-		super(props);
-		this.initialState = {
-		    observerPlanetAngle: 0,
-		    targetPlanetAngle: 0,
- 		    radiusTargetPlanet: 2.4,
-		    radiusObserverPlanet: 1.0,
-		    targetFixed: true,
-		    radiusPixelTarget: 400,
-		    radiusPixelObserver: 166.66,
-		  observerMultiplier: Math.pow (1.0, -1.5),
-                  targetMultiplier:  Math.pow(2.4, -1.5),
-		  animationRate: 1.5,
-		};
+    constructor(props) {
+	super(props);
+	this.initialState = {
+	    observerPlanetAngle: 0,
+	    targetPlanetAngle: 0,
+ 	    radiusTargetPlanet: 2.4,
+	    radiusObserverPlanet: 1.0,
+	    targetFixed: true,
+	    radiusPixelTarget: 400,
+	    radiusPixelObserver: 166.66,
+	    observerMultiplier: Math.pow (1.0, -1.5),
+            targetMultiplier:  Math.pow(2.4, -1.5),
+	    animationRate: 1.5,
+            targetAngle: 0,
+            sunAngle: -Math.PI
+	};
 
-		this.state = this.initialState;
-		this.raf = null;
+	this.state = this.initialState;
+	this.raf = null;
 
-		this.stopAnimation = this.stopAnimation.bind(this);
-	}
+	this.stopAnimation = this.stopAnimation.bind(this);
+    }
     render() {
         let startBtnText = 'Play animation';
         if (this.state.isPlaying) {
@@ -52,13 +54,15 @@ class PlanetaryConfigSim extends React.Component {
             <div className="row mt-2">
                 <div className="col-8">
                     <MainView
-                        observerPlanetAngle={this.state.observerPlanetAngle}
-                        targetPlanetAngle={this.state.targetPlanetAngle}
-                        radiusTargetPlanet={this.state.radiusPixelTarget}
-                        radiusObserverPlanet={this.state.radiusPixelObserver}
-                        onObserverPlanetAngleUpdate={this.onObserverPlanetAngleUpdate.bind(this)}
-                        onTargetPlanetAngleUpdate={this.onTargetPlanetAngleUpdate.bind(this)}
-                        stopAnimation={this.stopAnimation}
+                      observerPlanetAngle={this.state.observerPlanetAngle}
+                      targetPlanetAngle={this.state.targetPlanetAngle}
+                      radiusTargetPlanet={this.state.radiusPixelTarget}
+                      radiusObserverPlanet={this.state.radiusPixelObserver}
+                      onObserverPlanetAngleUpdate={this.onObserverPlanetAngleUpdate.bind(this)}
+                      onTargetPlanetAngleUpdate={this.onTargetPlanetAngleUpdate.bind(this)}
+                      stopAnimation={this.stopAnimation}
+                      targetAngle={this.state.targetAngle}
+                      sunAngle={this.state.sunAngle}
                     />
                 </div>
                     <div className="rowx">
@@ -140,13 +144,14 @@ class PlanetaryConfigSim extends React.Component {
                     </div>
 		    <div className="bot">
 		        <ZodiacStrip
-				speed={this.state.animationRate}
-				observerPlanetAngle={this.state.observerPlanetAngle}
-				targetPlanetAngle={this.state.targetPlanetAngle}
-                                radiusObserverPlanet={this.state.radiusObserverPlanet}
-                                radiusTargetPlanet={this.state.radiusTargetPlanet}
-				isPlaying={this.state.isPlaying}
-                                stopAnimation={this.stopAnimation}
+			  speed={this.state.animationRate}
+			  observerPlanetAngle={this.state.observerPlanetAngle}
+			  targetPlanetAngle={this.state.targetPlanetAngle}
+                          radiusObserverPlanet={this.state.radiusObserverPlanet}
+                          radiusTargetPlanet={this.state.radiusTargetPlanet}
+			  isPlaying={this.state.isPlaying}
+                          stopAnimation={this.stopAnimation}
+                          updateAngles={this.updateAngles.bind(this)}
 		        />
                     </div>
                 </div>
@@ -184,6 +189,14 @@ class PlanetaryConfigSim extends React.Component {
             this.setState({isPlaying: false});
         }
     }
+
+    updateAngles(targetAng, sunAng) {
+        this.setState({
+            targetAngle: targetAng,
+            sunAngle: sunAng,
+        });
+    }
+
     onObserverPlanetAngleUpdate(newAngle) {
         this.stopAnimation();
         let diff = 0;

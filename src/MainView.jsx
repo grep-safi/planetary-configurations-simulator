@@ -99,6 +99,7 @@ export default class MainView extends React.Component {
 
             me.arrowToSun = me.drawArrows ();
             me.arrowToTarget = me.drawArrows ();
+            me.elongationArc = me.drawArc();
 
             me.observerPlanetName = me.drawText ('earth', me.props.radiusObserverPlanet, false);
             me.targetPlanetName = me.drawText ('mars', me.props.radiusTargetPlanet, true);
@@ -136,6 +137,7 @@ export default class MainView extends React.Component {
         );
 
         this.updateArrows ();
+        this.updateArc();
 
         if (this.state.isHoveringOnObserverPlanet || this.draggingObserverPlanet) {
             this.observerPlanetHighlight.visible = true;
@@ -181,6 +183,45 @@ export default class MainView extends React.Component {
         this.targetPlanetName.position.y = 460 + targetNameY;
     }
 
+    drawArc () {
+        const elongArc = new PIXI.Graphics ();
+        elongArc.visible = true;
+
+        elongArc.clear();
+        elongArc.lineStyle(2, 0x00FFD2);
+        elongArc.beginFill(0xffe200, 0.7);
+        elongArc.arc(
+            this.observerPlanetContainer.x,
+            this.observerPlanetContainer.y,
+            50,
+            this.props.targetAngle,
+            this.props.sunAngle,
+            true
+        );
+
+        this.app.stage.addChild(elongArc);
+        return elongArc;
+    }
+
+    updateArc() {
+        this.elongationArc.clear();
+        this.elongationArc.lineStyle(2, 0x00FFD2);
+        this.elongationArc.beginFill(0xffe200, 0.7);
+        this.elongationArc.moveTo(this.observerPlanetContainer.x, this.observerPlanetContainer.y);
+        this.elongationArc.arc(
+            this.observerPlanetContainer.x,
+            this.observerPlanetContainer.y,
+            60,
+            -this.props.targetAngle,
+            -this.props.sunAngle,
+            -this.props.sunAngle < 0 && -this.props.sunAngle > -Math.PI
+        );
+
+        let tar = this.props.targetAngle * 180 / Math.PI;
+        let sunn = this.props.sunAngle * 180 / Math.PI;
+        console.log('mars and sun angles: ', tar, sunn);
+    }
+
     drawArrows () {
         const g = new PIXI.Graphics();
         g.visible = false;
@@ -188,14 +229,6 @@ export default class MainView extends React.Component {
         g.clear();
         g.lineStyle(2, 0x00FFD2);
         g.beginFill(0xffe200, 0.7);
-        g.arc(
-            600,
-            460,
-            200 * 2,
-            Math.PI,
-            -0,
-            true
-        );
 
         this.app.stage.addChild(g);
         return g;
@@ -231,17 +264,6 @@ export default class MainView extends React.Component {
         this.arrowToSun.lineTo(
             this.earth.x,
             this.earth.y
-        );
-
-        this.arrowToTarget.lineStyle(2, 0x00FFD2);
-        this.arrowToTarget.beginFill(0xffe200, 0.7);
-        this.arrowToTarget.arc(
-            600,
-            460,
-            200 * 2,
-            Math.PI,
-            -0,
-            true
         );
     }
 
