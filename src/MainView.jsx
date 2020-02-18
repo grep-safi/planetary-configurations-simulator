@@ -9,11 +9,6 @@ const getPlanetPos = function(radius, phase) {
     );
 };
 
-const convertFromAU = function(AUradius) {
-    let pixelRadius = ((AUradius - 0.25) / 9.75) * 550 + 50;
-    return pixelRadius;
-};
-
 export default class MainView extends React.Component {
     constructor(props) {
         super(props);
@@ -37,6 +32,7 @@ export default class MainView extends React.Component {
         this.onEarthMove = this.onEarthMove.bind(this);
         this.onObserverPlanetMove = this.onObserverPlanetMove.bind(this);
         this.onTargetPlanetMove = this.onTargetPlanetMove.bind(this);
+        this.sprite = null;
     }
     render() {
         return (
@@ -141,14 +137,7 @@ export default class MainView extends React.Component {
             this.props.targetPlanetAngle
         );
 
-        // console.log('AU radius of target and observer', this.props.targetAU, this.props.observerAU);
-        // let diffTarget = convertFromAU(this.props.targetAU) - this.props.radiusTargetPlanet;
-        // let diffObserver = convertFromAU(this.props.observerAU) - this.props.radiusObserverPlanet;
-
-        // console.log("to each: ", convertFromAU(this.props.targetAU), this.props.radiusTargetPlanet);
-        // console.log("their own: ", convertFromAU(this.props.observerAU), this.props.radiusObserverPlanet);
-        // console.log("differences: ", diffTarget, diffObserver);
-
+        this.sprite.texture = PIXI.Texture.from('img/mars.png');
 
         this.updateArrows ();
         this.updateArc();
@@ -312,11 +301,13 @@ export default class MainView extends React.Component {
         this.observerPlanetOrbitContainer.lineStyle(2, 0xffffff);
         this.observerPlanetOrbitContainer.drawCircle(this.orbitCenter.x, this.orbitCenter.y, this.props.radiusObserverPlanet);
     }
+
     updateTargetPlanetOrbit() {
         this.targetPlanetOrbitContainer.clear();
         this.targetPlanetOrbitContainer.lineStyle(2, 0xffffff);
         this.targetPlanetOrbitContainer.drawCircle(this.orbitCenter.x, this.orbitCenter.y, this.props.radiusTargetPlanet);
     }
+
     drawObserverPlanetOrbit() {
         const graphicsObserverPlanet = new PIXI.Graphics();
         graphicsObserverPlanet.lineStyle(2, 0xffffff);
@@ -350,6 +341,8 @@ export default class MainView extends React.Component {
         observerPlanet.width = 20 * 2;
         observerPlanet.height = 20 * 2;
         observerPlanet.anchor.set(0.5);
+        this.sprite = observerPlanet;
+        console.log('i am sprie', this.sprite);
         observerPlanetContainer.addChild(observerPlanet);
 
         this.app.stage.addChild(observerPlanetContainer);

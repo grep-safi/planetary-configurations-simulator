@@ -128,7 +128,7 @@ class PlanetaryConfigSim extends React.Component {
                            </div>
                            <select className="form-control form-control-sm"
                                    onChange={this.onPresetSelectTarget.bind(this)}
-                                   option={this.state.optionTarget}
+                                   value={this.state.optionTarget}
                            >
                              <option value={0}>Preset</option>
                              <option value={1}>Mercury</option>
@@ -195,9 +195,6 @@ class PlanetaryConfigSim extends React.Component {
             observerPlanetAngle: me.incrementObserverPlanetAngle(prevState.observerPlanetAngle, 0.0115 * this.state.animationRate),
             targetPlanetAngle: me.incrementTargetPlanetAngle(prevState.targetPlanetAngle, 0.0115 * this.state.animationRate)
         }));
-
-        console.log('AU radius target and observer: ', this.state.radiusTargetPlanet, this.state.radiusObserverPlanet);
-        console.log('Pixel radius target and observer: ', this.state.radiusPixelTarget, this.state.radiusPixelObserver);
 
         this.raf = requestAnimationFrame(this.animate.bind(this));
     }
