@@ -23,7 +23,9 @@ class PlanetaryConfigSim extends React.Component {
             targetAngle: 0,
             sunAngle: -Math.PI,
             optionObserver: 0,
-            optionTarget: 0
+            optionTarget: 0,
+            targetName: 'mars',
+            observerName: 'earth'
 	};
 
 	this.state = this.initialState;
@@ -67,6 +69,8 @@ class PlanetaryConfigSim extends React.Component {
                        stopAnimation={this.stopAnimation}
                        targetAngle={this.state.targetAngle}
                        sunAngle={this.state.sunAngle}
+                       targetName={this.state.targetName}
+                       observerName={this.state.observerName}
                      />
                    </div>
                    <div className="rowx">
@@ -297,7 +301,7 @@ class PlanetaryConfigSim extends React.Component {
 
     onPresetSelectTarget(e) {
         this.setState({
-            optionTarget: e.target.value
+            optionTarget: e.target.value,
         });
 
         if (e.target.value == 1) {

@@ -137,7 +137,7 @@ export default class MainView extends React.Component {
             this.props.targetPlanetAngle
         );
 
-        this.sprite.texture = PIXI.Texture.from('img/mars.png');
+        // this.sprite.texture = PIXI.Texture.from('img/earth.svg');
 
         this.updateArrows ();
         this.updateArc();
@@ -341,9 +341,8 @@ export default class MainView extends React.Component {
         observerPlanet.width = 20 * 2;
         observerPlanet.height = 20 * 2;
         observerPlanet.anchor.set(0.5);
-        this.sprite = observerPlanet;
-        console.log('i am sprie', this.sprite);
         observerPlanetContainer.addChild(observerPlanet);
+        this.sprite = observerPlanet;
 
         this.app.stage.addChild(observerPlanetContainer);
         return observerPlanetContainer;
