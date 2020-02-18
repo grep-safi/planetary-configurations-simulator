@@ -102,8 +102,8 @@ export default class MainView extends React.Component {
             me.arrowToTarget = me.drawArrows ();
             me.elongationArc = me.drawArc();
 
-            me.observerPlanetName = me.drawText ('earth', me.props.radiusObserverPlanet, false);
-            me.targetPlanetName = me.drawText ('mars', me.props.radiusTargetPlanet, true);
+            me.observerPlanetName = me.drawText (this.props.observerName, me.props.radiusObserverPlanet, false);
+            me.targetPlanetName = me.drawText (this.props.targetName, me.props.radiusTargetPlanet, true);
 
             me.start();
         });
@@ -172,9 +172,10 @@ export default class MainView extends React.Component {
             radius -= 60;
         }
 
-        text.position.x = 560;
+        text.position.x = 520;
         text.position.y = 460 + radius;
         this.app.stage.addChild(text);
+        console.log('issa meee', text.width, text.height);
         return text;
     }
 
@@ -182,8 +183,16 @@ export default class MainView extends React.Component {
         let observerNameY = this.props.radiusObserverPlanet + 15;
         let targetNameY = this.props.radiusTargetPlanet * -1 - 60;
 
+        let observerNameX = this.observerPlanetName.width / 2;
+        let targetNameX = this.targetPlanetName.width / 2;
+
+        this.observerPlanetName.x = 600 - observerNameX;
+        this.targetPlanetName.x = 600 - targetNameX;
+
         this.observerPlanetName.y = 460 + observerNameY;
-        this.targetPlanetName.position.y = 460 + targetNameY;
+        this.targetPlanetName.y = 460 + targetNameY;
+        this.observerPlanetName.text = this.props.observerName;
+        this.targetPlanetName.text = this.props.targetName;
     }
 
     drawArc () {

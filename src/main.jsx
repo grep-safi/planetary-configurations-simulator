@@ -24,8 +24,8 @@ class PlanetaryConfigSim extends React.Component {
             sunAngle: -Math.PI,
             optionObserver: 0,
             optionTarget: 0,
-            targetName: 'mars',
-            observerName: 'earth'
+            targetName: 'target planet',
+            observerName: 'observer planet'
 	};
 
 	this.state = this.initialState;
@@ -304,20 +304,34 @@ class PlanetaryConfigSim extends React.Component {
             optionTarget: e.target.value,
         });
 
-        if (e.target.value == 1) {
+        let name = "";
+
+        if (e.target.value == 0) {
+            this.onTargetPlanetRadiusChange(2.4);
+            name = "target planet";
+        } else if (e.target.value == 1) {
             this.onTargetPlanetRadiusChange(0.39);
+            name = "mercury";
         } else if (e.target.value == 2) {
             this.onTargetPlanetRadiusChange(0.72);
+            name = "venus";
         } else if (e.target.value == 3) {
             this.onTargetPlanetRadiusChange(1.00);
+            name = "earth";
         } else if (e.target.value == 4) {
             this.onTargetPlanetRadiusChange(1.52);
+            name = "mars";
         } else if (e.target.value == 5) {
             this.onTargetPlanetRadiusChange(5.20);
+            name = "jupiter";
         } else if (e.target.value == 6) {
             this.onTargetPlanetRadiusChange(9.54);
+            name = "saturn";
         }
 
+        this.setState({
+            targetName: name,
+        });
     }
 
     onPresetSelectObserver(e) {
@@ -325,19 +339,33 @@ class PlanetaryConfigSim extends React.Component {
             optionObserver: e.target.value
         });
 
-        if (e.target.value == 1) {
+        if (e.target.value == 0) {
+            this.onObserverPlanetRadiusChange(1.0);
+            name = "observer planet";
+        } else if (e.target.value == 1) {
             this.onObserverPlanetRadiusChange(0.39);
+            name = "mercury";
         } else if (e.target.value == 2) {
             this.onObserverPlanetRadiusChange(0.72);
+            name = "venus";
         } else if (e.target.value == 3) {
             this.onObserverPlanetRadiusChange(1.00);
+            name = "earth";
         } else if (e.target.value == 4) {
             this.onObserverPlanetRadiusChange(1.52);
+            name = "mars";
         } else if (e.target.value == 5) {
             this.onObserverPlanetRadiusChange(5.20);
+            name = "jupiter";
         } else if (e.target.value == 6) {
             this.onObserverPlanetRadiusChange(9.54);
+            name = "saturn";
         }
+
+        this.setState({
+            observerName: name,
+        });
+
     }
 
     onObserverPlanetRadiusChange(e) {
