@@ -21,7 +21,9 @@ class PlanetaryConfigSim extends React.Component {
             targetMultiplier:  Math.pow(2.4, -1.5),
 	    animationRate: 1.5,
             targetAngle: 0,
-            sunAngle: -Math.PI
+            sunAngle: -Math.PI,
+            optionObserver: 0,
+            optionTarget: 0
 	};
 
 	this.state = this.initialState;
@@ -91,7 +93,10 @@ class PlanetaryConfigSim extends React.Component {
                                              min={0.25} max={10}
                              />
                            </div>
-                           <select className="form-control form-control-sm" onChange={this.onPresetSelectObserver.bind(this)}>
+                           <select className="form-control form-control-sm"
+                                   onChange={this.onPresetSelectObserver.bind(this)}
+                                   value={this.state.optionObserver}
+                           >
                              <option value={0}>Preset</option>
                              <option value={1}>Mercury</option>
                              <option value={2}>Venus</option>
@@ -121,7 +126,10 @@ class PlanetaryConfigSim extends React.Component {
                                              onChange={this.onTargetPlanetRadiusChange.bind(this)}
                                              step={0.01} min={0.25} max={10} />
                            </div>
-                           <select className="form-control form-control-sm" onChange={this.onPresetSelectTarget.bind(this)}>
+                           <select className="form-control form-control-sm"
+                                   onChange={this.onPresetSelectTarget.bind(this)}
+                                   option={this.state.optionTarget}
+                           >
                              <option value={0}>Preset</option>
                              <option value={1}>Mercury</option>
                              <option value={2}>Venus</option>
@@ -291,6 +299,10 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     onPresetSelectTarget(e) {
+        this.setState({
+            optionTarget: e.target.value
+        });
+
         if (e.target.value == 1) {
             this.onTargetPlanetRadiusChange(0.39);
         } else if (e.target.value == 2) {
@@ -308,6 +320,10 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     onPresetSelectObserver(e) {
+        this.setState({
+            optionObserver: e.target.value
+        });
+
         if (e.target.value == 1) {
             this.onObserverPlanetRadiusChange(0.39);
         } else if (e.target.value == 2) {
@@ -331,12 +347,7 @@ class PlanetaryConfigSim extends React.Component {
             au = e;
         }
 
-        console.log('observer and ttarget radii: ', this.state.radiusObserverPlanet, this.state.radiusTargetPlanet);
-        this.setState({
-	    radiusObserverPlanet: forceNumber(au),
-        });
-        console.log('new observer and ttarget radii: ', this.state.radiusObserverPlanet, this.state.radiusTargetPlanet, au);
-	if (this.state.radiusObserverPlanet >= this.state.radiusTargetPlanet) {
+	if (au >= this.state.radiusTargetPlanet) {
 	    this.changeTarget(au);
 	} else {
             let ratio = (au / this.state.radiusTargetPlanet) * 400;
@@ -346,7 +357,6 @@ class PlanetaryConfigSim extends React.Component {
                 radiusPixelTarget: 400,
             });
 	}
-        console.log('new new observer and ttarget radii: ', this.state.radiusObserverPlanet, this.state.radiusTargetPlanet);
         this.updateMultiplier();
     }
     changeTarget(au) {
@@ -367,7 +377,7 @@ class PlanetaryConfigSim extends React.Component {
             au = e;
         }
 
-        if (this.state.radiusTargetPlanet >= this.state.radiusObserverPlanet) {
+        if (au >= this.state.radiusObserverPlanet) {
             this.changeObserver(au);
         } else {
             let ratio = (au / this.state.radiusObserverPlanet) * 400;
