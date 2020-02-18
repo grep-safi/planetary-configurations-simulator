@@ -138,6 +138,8 @@ export default class MainView extends React.Component {
         );
 
         // this.sprite.texture = PIXI.Texture.from('img/earth.svg');
+        console.log(this.sprite.texture.resource);
+
 
         this.updateArrows ();
         this.updateArc();
@@ -172,7 +174,7 @@ export default class MainView extends React.Component {
             radius -= 60;
         }
 
-        text.position.x = 520;
+        text.position.x = 600 - (text.width / 2);
         text.position.y = 460 + radius;
         this.app.stage.addChild(text);
         console.log('issa meee', text.width, text.height);
@@ -180,7 +182,7 @@ export default class MainView extends React.Component {
     }
 
     updateText() {
-        let observerNameY = this.props.radiusObserverPlanet + 15;
+        let observerNameY = this.props.radiusObserverPlanet + 8;
         let targetNameY = this.props.radiusTargetPlanet * -1 - 60;
 
         let observerNameX = this.observerPlanetName.width / 2;

@@ -39,7 +39,7 @@ export default class ZodiacStrip extends React.Component {
       this.app.stage.addChild(stage);
 
       const zodiacStrip = new PIXI.Sprite(
-	PIXI.Texture.from('img/zodiac-strip.png')
+	PIXI.Texture.from('img/zodiac_strip.jpg')
       );
 
       zodiacStrip.y += 50;
