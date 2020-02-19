@@ -13,7 +13,7 @@ export default class MainView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isHoveringOnEarth: false,
+            isHoveringOnSun: false,
             isHoveringOnObserverPlanet: false,
             isHoveringOnTargetPlanet: false
         };
@@ -29,7 +29,7 @@ export default class MainView extends React.Component {
         this.onDragStart = this.onDragStart.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
 
-        this.onEarthMove = this.onEarthMove.bind(this);
+        this.onSunMove = this.onSunMove.bind(this);
         this.onObserverPlanetMove = this.onObserverPlanetMove.bind(this);
         this.onTargetPlanetMove = this.onTargetPlanetMove.bind(this);
         this.sprite = null;
@@ -53,16 +53,16 @@ export default class MainView extends React.Component {
 
         // Loads all the images
         this.app.loader.add('observerPlanet', 'img/earth.svg')
-        .add('earth', 'img/sun.png')
-	.add('targetPlanet', 'img/mars.png')
-        .add('highlight', 'img/circle-highlight.svg');
+            .add('sun', 'img/sun.png')
+	    .add('targetPlanet', 'img/mars.png')
+            .add('highlight', 'img/circle-highlight.svg');
 
         const me = this;
         this.app.loader.load((loader, resources) => {
             me.resources = resources;
 
-            me.earth = me.drawEarth(
-                resources.earth);
+            me.sun = me.drawSun(
+                resources.sun);
 
             me.observerPlanetOrbitContainer = me.drawObserverPlanetOrbit();
             me.targetPlanetOrbitContainer = me.drawTargetPlanetOrbit();
@@ -137,7 +137,7 @@ export default class MainView extends React.Component {
             this.props.targetPlanetAngle
         );
 
-        // this.sprite.texture = PIXI.Texture.from('img/earth.svg');
+        // this.sprite.texture = PIXI.Texture.from('img/sun.svg');
         console.log(this.sprite.texture.resource);
 
 
@@ -302,8 +302,8 @@ export default class MainView extends React.Component {
         );
 
         this.arrowToSun.lineTo(
-            this.earth.x,
-            this.earth.y
+            this.sun.x,
+            this.sun.y
         );
     }
 
@@ -382,24 +382,24 @@ export default class MainView extends React.Component {
         this.app.stage.addChild(targetPlanetContainer);
         return targetPlanetContainer;
     }
-    drawEarth(earthResource) {
-        const earthContainer = new PIXI.Container();
-        earthContainer.pivot = this.orbitCenter;
-        earthContainer.name = 'earth';
-        earthContainer.buttonMode = true;
-        earthContainer.interactive = true;
-        earthContainer.position = this.orbitCenter;
+    drawSun(sunResource) {
+        const sunContainer = new PIXI.Container();
+        sunContainer.pivot = this.orbitCenter;
+        sunContainer.name = 'sun';
+        sunContainer.buttonMode = true;
+        sunContainer.interactive = true;
+        sunContainer.position = this.orbitCenter;
 
-        const earth = new PIXI.Sprite(earthResource.texture);
-        earth.width = 40 * 2;
-        earth.height = 40 * 2;
-        earth.position = this.orbitCenter;
-        earth.anchor.set(0.5);
-        earth.rotation = -0.9;
-        earthContainer.addChild(earth);
+        const sun = new PIXI.Sprite(sunResource.texture);
+        sun.width = 40 * 2;
+        sun.height = 40 * 2;
+        sun.position = this.orbitCenter;
+        sun.anchor.set(0.5);
+        sun.rotation = -0.9;
+        sunContainer.addChild(sun);
 
-        this.app.stage.addChild(earthContainer);
-        return earthContainer;
+        this.app.stage.addChild(sunContainer);
+        return sunContainer;
     }
     onDragStart(event) {
         this.props.stopAnimation();
@@ -407,8 +407,8 @@ export default class MainView extends React.Component {
         this.data = event.data;
         this.dragStartPos = this.data.getLocalPosition(this.app.stage);
 
-        if (event.target.name === 'earth') {
-            this.draggingEarth = true;
+        if (event.target.name === 'sun') {
+            this.draggingSun = true;
         } else if (event.target.name === 'observerPlanet') {
             this.draggingObserverPlanet = true;
         } else if (event.target.name === 'targetPlanet') {
@@ -416,29 +416,29 @@ export default class MainView extends React.Component {
         }
     }
     onDragEnd() {
-        this.draggingEarth = false;
+        this.draggingSun = false;
         this.draggingObserverPlanet = false;
         this.draggingTargetPlanet = false;
         // set the interaction data to null
         this.data = null;
     }
-    onEarthMove(e) {
-        if (e.target && e.target.name === 'earth' &&
-            !this.state.isHoveringOnEarth &&
+    onSunMove(e) {
+        if (e.target && e.target.name === 'sun' &&
+            !this.state.isHoveringOnSun &&
             !this.draggingObserverPlanet &&
             !this.draggingTargetPlanet
-        ) {
-            this.setState({isHoveringOnEarth: true});
+           ) {
+            this.setState({isHoveringOnSun: true});
         }
-        if (!e.target && this.state.isHoveringOnEarth) {
-            this.setState({isHoveringOnEarth: false});
+        if (!e.target && this.state.isHoveringOnSun) {
+            this.setState({isHoveringOnSun: false});
         }
     }
     onObserverPlanetMove(e) {
         if (e.target && e.target.name === 'observerPlanet' &&
             !this.state.isHoveringOnObserverPlanet &&
-            !this.draggingEarth
-        ) {
+            !this.draggingSun
+           ) {
             this.setState({isHoveringOnObserverPlanet: true});
         }
         if (!e.target && this.state.isHoveringOnObserverPlanet) {
@@ -453,7 +453,7 @@ export default class MainView extends React.Component {
             // where it is now.
             let vAngle =
                 -1 * Math.atan2(newPosition.y - this.orbitCenter.y,
-                           newPosition.x - this.orbitCenter.x);
+                                newPosition.x - this.orbitCenter.x);
 
             this.props.onObserverPlanetAngleUpdate(vAngle);
         }
@@ -461,8 +461,8 @@ export default class MainView extends React.Component {
     onTargetPlanetMove(e) {
         if (e.target && e.target.name === 'targetPlanet' &&
             !this.state.isHoveringOnTargetPlanet &&
-            !this.draggingEarth
-        ) {
+            !this.draggingSun
+           ) {
             this.setState({isHoveringOnTargetPlanet: true});
         }
         if (!e.target && this.state.isHoveringOnTargetPlanet) {
@@ -473,8 +473,8 @@ export default class MainView extends React.Component {
             const newPosition = this.data.getLocalPosition(this.app.stage);
 
             const vAngle =
-                -1 * Math.atan2(newPosition.y - this.orbitCenter.y,
-                           newPosition.x - this.orbitCenter.x);
+                  -1 * Math.atan2(newPosition.y - this.orbitCenter.y,
+                                  newPosition.x - this.orbitCenter.x);
 
             this.props.onTargetPlanetAngleUpdate(vAngle);
         }
