@@ -94,7 +94,7 @@ class PlanetaryConfigSim extends React.Component {
                             </form>
                           </div>
                           {/*
-                             <input 
+                             <input
                              type="number" size="10"
                              className="form-control form-control-sm"
                              step="10" name="distance"
@@ -114,17 +114,17 @@ class PlanetaryConfigSim extends React.Component {
                             />
                           </div>
                           {/*
-                             <RangeStepInput 
+                             <RangeStepInput
                              name="radiusObserverPlanet"
                              className="form-control-range ml-2"
                              value={this.state.radiusObserverPlanet}
                              onChange={this.onObserverPlanetRadiusChange.bind(this)}
                              step={0.1}
-                             min={50} max={600} 
+                             min={50} max={600}
                              />
                            */}
                           <div className="observerPresets">
-                            <select className="form-control form-control-sm" 
+                            <select className="form-control form-control-sm"
                                     onChange={this.onPresetSelectObserver.bind(this)}
                                     value={this.state.optionObserver}>
                               <option value={0} defaultValue>*preset*</option>
@@ -136,7 +136,7 @@ class PlanetaryConfigSim extends React.Component {
                               <option value={6}>Saturn</option>
                             </select>
                           </div>
-                          {/*</form>*/} 
+                          {/*</form>*/}
 
                           <div className="targetText">
                             <label htmlFor="radTargetPlanetRange">radius of target planet's orbit:</label>
@@ -155,7 +155,7 @@ class PlanetaryConfigSim extends React.Component {
                             </form>
                           </div>
                           {/*
-                             <input 
+                             <input
                              type="number" size="4"
                              className="form-control form-control-sm"
                              step="10" name="distance"
@@ -179,11 +179,11 @@ class PlanetaryConfigSim extends React.Component {
                              className="form-control-range ml-2"
                              value={this.state.radiusTargetPlanet}
                              onChange={this.onTargetPlanetRadiusChange.bind(this)}
-                             step={0.1} min={50} max={600} 
+                             step={0.1} min={50} max={600}
                              />
                            */}
                           <div className="targetPresets">
-                            <select className="form-control form-control-sm" 
+                            <select className="form-control form-control-sm"
                                     onChange={this.onPresetSelectTarget.bind(this)}
                                     value={this.state.optionTarget}>
                               <option value={0} defaultValue>*preset*</option>
@@ -197,7 +197,7 @@ class PlanetaryConfigSim extends React.Component {
                           </div>
                           {/*</form>*/}
 
-                          {/*                      
+                          {/*
                              <div className="presets">
                              <form>
                              <select className="form-control form-control-sm" onChange={this.onPresetSelect}>
@@ -206,7 +206,7 @@ class PlanetaryConfigSim extends React.Component {
                              <option value={2}>Venus</option>
                              </select>
                              </form>
-                             </div> 
+                             </div>
                            */}
                         </div>
 
@@ -226,23 +226,35 @@ class PlanetaryConfigSim extends React.Component {
                             />
                           </div>
                           <div className="animationButton">
-                            <button type="button" 
+                            <button type="button"
                                     className="btn btn-primary btn-sm"
                                     onClick={this.onStartClick.bind(this)}>
                               {startBtnText}
                             </button>
                           </div>
                           {/*
-                             <RangeStepInput 
+                             <RangeStepInput
                              name="animationRate"
                              className="form-control-range ml-2"
                              value={this.state.animationRate}
                              onChange={this.onAnimationRateChange.bind(this)}
                              step={0.1}
-                             min={0.1} max={3} 
+                             min={0.1} max={3}
                              />
                            */}
                         </div>
+
+                        <div className="toggleFeatures">
+                          <input type="checkbox"
+                           name="elongationDisplay"
+                           /* onChange={this.props.onInputChange} */
+                           /* checked={this.props.showDeclinationCircle} */
+                           id="elongToggle" />
+                          <label htmlFor="elongationDisplay">
+                            Show the sun&apos;s declination circle
+                          </label>
+                        </div>
+
                       </div>
 		      <div className="bot">
 		        <ZodiacStrip
@@ -377,7 +389,7 @@ class PlanetaryConfigSim extends React.Component {
             observerPlanetAngle: newObserverPlanet
         });
     }
-    
+
     onAnimationRateChange(e) {
         this.setState({
             animationRate: forceNumber(e.target.value)
@@ -453,7 +465,7 @@ class PlanetaryConfigSim extends React.Component {
         });
     }
 
-    onObserverPlanetRadiusChange(e) { 
+    onObserverPlanetRadiusChange(e) {
         let au = 0;
 
         if (typeof(e) === 'object') {
