@@ -223,9 +223,7 @@ export default class MainView extends React.Component {
 
     updateArc() {
         this.elongationArc.clear();
-        // this.elongationArc.lineStyle(5.0, 0x4A235A);
         this.elongationArc.lineStyle(3.0, 0x00FFD2);
-        // this.elongationArc.beginFill(0x90f599, 0.4);
         this.elongationArc.moveTo(this.observerPlanetContainer.x, this.observerPlanetContainer.y);
         let east = this.greaterThan180();
         this.elongationArc.arc(
@@ -238,9 +236,6 @@ export default class MainView extends React.Component {
         );
 
         this.updateArcArrow(east);
-
-        // Don't get rid of my fucking comments
-        // Except that one ^ lol.
 
         // let tar = this.props.targetAngle * 180 / Math.PI;
         // let sunn = this.props.sunAngle * 180 / Math.PI;
@@ -262,13 +257,12 @@ export default class MainView extends React.Component {
         } else {
             this.halfArrow(0.1,10.5,75);
             this.halfArrow(0.1,-10.5,105);
-            this
         }
     }
 
     halfArrow(angleShift, angleReverse, rad) {
 
-        this.elongationArc.lineStyle(5.0, 0xFBFCFC);
+        this.elongationArc.lineStyle(3.0, 0xFBFCFC);
         let smt = getPlanetPos(
             this.props.radiusObserverPlanet,
             this.props.observerPlanetAngle
@@ -291,7 +285,6 @@ export default class MainView extends React.Component {
         let dist = 10;
 
         this.elongationArc.moveTo((Math.sin(angle) * dist + centrePointX), (-Math.cos(angle) * dist + centrePointY));
-
         this.elongationArc.lineTo((-Math.sin(angle) * dist + centrePointX), (Math.cos(angle) * dist + centrePointY));
     }
 

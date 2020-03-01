@@ -81,7 +81,7 @@ class PlanetaryConfigSim extends React.Component {
                             <label htmlFor="radObserverPlanetRange">radius of observer planet's orbit:</label>
                           </div>
                           <div className="observerInput">
-                            <form onSubmit={this.onSubmit.bind(this)}>
+                            <form onSubmit={this.onSubmitObserver.bind(this)}>
                               <input
                                 className="input"
                                 type="number"
@@ -137,19 +137,19 @@ class PlanetaryConfigSim extends React.Component {
                             </select>
                           </div>
                           {/*</form>*/} 
-                          
+
                           <div className="targetText">
                             <label htmlFor="radTargetPlanetRange">radius of target planet's orbit:</label>
                           </div>
                           <div className="targetInput">
-                            <form onSubmit={this.onSubmit.bind(this)}>
+                            <form onSubmit={this.onSubmitTarget.bind(this)}>
                               <input
                                 className="input"
                                 type="number"
                                 min={0.25}
                                 max={10.00}
                                 step={0.01}
-                                placeholder={this.state.holdTarget}
+                                value={this.state.holdTarget}
                                 onChange={this.changeValTarget.bind(this)}
                               />
                             </form>
@@ -543,11 +543,14 @@ class PlanetaryConfigSim extends React.Component {
         this.setState(this.initialState);
     }
 
-    onSubmit(e) {
+    onSubmitObserver(e) {
         e.preventDefault();
         this.onObserverPlanetRadiusChange(this.state.holdObserver);
+    }
+
+    onSubmitTarget(e) {
+        e.preventDefault();
         this.onTargetPlanetRadiusChange(this.state.holdTarget);
-        // return false;
     }
 
     changeValObserver(e) {
