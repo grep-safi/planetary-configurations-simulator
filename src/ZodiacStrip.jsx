@@ -5,7 +5,7 @@ const getPlanetPos = function(radius, phase) {
     return new PIXI.Point(
         // these magic numbers come from this.orbitCenter
         radius * Math.cos(-phase) + 600,
-        radius * Math.sin(-phase) + 460); 
+        radius * Math.sin(-phase) + 460);
 };
 
 export default class ZodiacStrip extends React.Component {
@@ -76,11 +76,9 @@ export default class ZodiacStrip extends React.Component {
         const angleText = new PIXI.Text('Angle', {
             fontFamily: 'Garamond',
             fontSize: 42,
-            // fontWeight: 'bold',
-            fill: 0x39696, //0xffff80,
+            fill: 0x39696,
         });
 
-        // angleText.rotation = degToRad(-90);
         angleText.anchor.set(0.5);
         angleText.position.x = 300;
         angleText.position.y = 175;
@@ -102,7 +100,7 @@ export default class ZodiacStrip extends React.Component {
         zodiacText.position.x = 300;
         zodiacText.position.y = 25;
         this.app.stage.addChild(zodiacText);
-        
+
         return zodiacText;
     }
     drawSunZodiac() {

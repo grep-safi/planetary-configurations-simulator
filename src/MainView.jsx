@@ -64,13 +64,14 @@ export default class MainView extends React.Component {
         this.app.loader.load((loader, resources) => {
             me.resources = resources;
 
-            me.sun = me.drawSun(resources.sun);
-
-            me.observerPlanetOrbitContainer = me.drawObserverPlanetOrbit();
-            me.targetPlanetOrbitContainer = me.drawTargetPlanetOrbit();
-
             me.arrowToSun = me.drawArrows ();
             me.arrowToTarget = me.drawArrows ();
+
+            me.sun = me.drawSun(resources.sun);
+
+
+            me.targetPlanetOrbitContainer = me.drawTargetPlanetOrbit();
+            me.observerPlanetOrbitContainer = me.drawObserverPlanetOrbit();
 
             me.observerPlanetContainer = me.drawObserverPlanet(
                 resources.observerPlanet, resources.highlight);

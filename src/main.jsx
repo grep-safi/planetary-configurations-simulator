@@ -171,7 +171,7 @@ class PlanetaryConfigSim extends React.Component {
                            type="range"
                            step={0.1}
                            min={0.1}
-                           max={Math.PI}
+                           max={2 * Math.PI}
                            value={this.state.animationRate}
                            onChange={this.onAnimationRateChange.bind(this)}
                          />
