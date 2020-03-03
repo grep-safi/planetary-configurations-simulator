@@ -276,12 +276,9 @@ export default class MainView extends React.Component {
         let endX = receive.x;
         let endY = receive.y;
 
-        // console.log('endX', endX, 'endY', endY);
-
         let centrePointX = ((startX + endX) / 2.0);
         let centrePointY = ((startY + endY) / 2.0);
-        // subtract 10 to the end of the next line to get the tilted angle needed for arrow
-        // Also, adding 10 will help in reversing the line to get the full arrow
+
         let angle = Math.atan2(endY - startY, endX - startX) + angleReverse;
         let dist = 10;
 
@@ -296,13 +293,9 @@ export default class MainView extends React.Component {
             this.props.targetPlanetAngle
         );
 
-        smt.x -= this.observerPlanetContainer.x;
-        smt.y -= this.observerPlanetContainer.y;
+        let angle = Math.atan2(smt.y - this.observerPlanetContainer.y, smt.x - this.observerPlanetContainer.x) + angleShift;
 
-        smt.y *= 1;
-
-        let angle = Math.atan2(smt.y, smt.x) + angleShift;
-        let radius = rad;       // 
+        let radius = rad;
         let y = radius * Math.sin(angle);
         let x = radius * Math.cos(angle);
 
