@@ -87,33 +87,8 @@ export default class MainView extends React.Component {
                 resources.observerPlanet, resources.highlight
             );
 
-            me.observerPlanetContainer
-            // events for drag start
-                .on('mousedown', me.onDragStart)
-                .on('touchstart', me.onDragStart)
-            // events for drag end
-                .on('mouseup', me.onDragEnd)
-                .on('mouseupoutside', me.onDragEnd)
-                .on('touchend', me.onDragEnd)
-                .on('touchendoutside', me.onDragEnd)
-            // events for drag move
-                .on('mousemove', me.onObserverPlanetMove)
-                .on('touchmove', me.onObserverPlanetMove);
-
             me.targetPlanetContainer = me.drawTargetPlanet(
                 resources.targetPlanet, resources.highlight);
-            me.targetPlanetContainer
-            // events for drag start
-                .on('mousedown', me.onDragStart)
-                .on('touchstart', me.onDragStart)
-            // events for drag end
-                .on('mouseup', me.onDragEnd)
-                .on('mouseupoutside', me.onDragEnd)
-                .on('touchend', me.onDragEnd)
-                .on('touchendoutside', me.onDragEnd)
-            // events for drag move
-                .on('mousemove', me.onTargetPlanetMove)
-                .on('touchmove', me.onTargetPlanetMove);
 
             me.observerPlanetName = me.drawText (this.props.observerName, me.props.radiusObserverPlanet, false);
             me.targetPlanetName = me.drawText (this.props.targetName, me.props.radiusTargetPlanet, true);
@@ -253,7 +228,6 @@ export default class MainView extends React.Component {
 
         elongationArc.clear();
         elongationArc.lineStyle(2, 0xe8c3c3);
-        // elongationArc.beginFill(0x99c9ac, 0.7);
         elongationArc.arc(
             ORBIT_CENTER_X,
             ORBIT_CENTER_Y,
@@ -372,7 +346,6 @@ export default class MainView extends React.Component {
 
         g.clear();
         g.lineStyle(4.0, 0xedb7b7);
-        // g.beginFill(0x99c9ac, 0.7);
 
         this.app.stage.addChild(g);
         return g;
@@ -419,7 +392,7 @@ export default class MainView extends React.Component {
             this.observerPlanetContainer.x,
             this.observerPlanetContainer.y,
             arrowRadius
-        )
+        );
 
         this.arrowToSun.lineTo(
             throughSun.x,
@@ -535,6 +508,7 @@ export default class MainView extends React.Component {
         const graphicsObserverPlanet = new PIXI.Graphics();
         graphicsObserverPlanet.lineStyle(2, 0xffffff);
         graphicsObserverPlanet.drawCircle(this.orbitCenter.x, this.orbitCenter.y, this.props.radiusObserverPlanet);
+
         this.app.stage.addChild(graphicsObserverPlanet);
         return graphicsObserverPlanet;
     }
@@ -569,6 +543,19 @@ export default class MainView extends React.Component {
         observerPlanetContainer.addChild(observerPlanet);
         this.sprite = observerPlanet;
 
+        observerPlanetContainer
+        // events for drag start
+            .on('mousedown', this.onDragStart)
+            .on('touchstart', this.onDragStart)
+        // events for drag end
+            .on('mouseup', this.onDragEnd)
+            .on('mouseupoutside', this.onDragEnd)
+            .on('touchend', this.onDragEnd)
+            .on('touchendoutside', this.onDragEnd)
+        // events for drag move
+            .on('mousemove', this.onObserverPlanetMove)
+            .on('touchmove', this.onObserverPlanetMove);
+
         this.app.stage.addChild(observerPlanetContainer);
         return observerPlanetContainer;
     }
@@ -593,6 +580,19 @@ export default class MainView extends React.Component {
         targetPlanet.height = 20 * 2;
         targetPlanet.anchor.set(0.5);
         targetPlanetContainer.addChild(targetPlanet);
+
+        targetPlanetContainer
+        // events for drag start
+            .on('mousedown', this.onDragStart)
+            .on('touchstart', this.onDragStart)
+        // events for drag end
+            .on('mouseup', this.onDragEnd)
+            .on('mouseupoutside', this.onDragEnd)
+            .on('touchend', this.onDragEnd)
+            .on('touchendoutside', this.onDragEnd)
+        // events for drag move
+            .on('mousemove', this.onTargetPlanetMove)
+            .on('touchmove', this.onTargetPlanetMove);
 
         this.app.stage.addChild(targetPlanetContainer);
         return targetPlanetContainer;
