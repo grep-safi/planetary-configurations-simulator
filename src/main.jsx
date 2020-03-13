@@ -29,7 +29,7 @@ class PlanetaryConfigSim extends React.Component {
             holdObserver: 1.00,
             holdTarget: 2.40,
             labelOrbits: true,
-            showElongation: false,
+            showElongation: true,
             zoomOut: false,
             startBtnText: 'start animation',
             isPlaying: false,
@@ -152,6 +152,7 @@ class PlanetaryConfigSim extends React.Component {
                            onChange={this.onTargetPlanetRadiusChange.bind(this)}
                          />
                        </div>
+
                        <div className="targetPresets">
                          <select className="form-control form-control-sm"
                                  onChange={this.onPresetSelectTarget.bind(this)}
@@ -229,8 +230,8 @@ class PlanetaryConfigSim extends React.Component {
 
                      </div>
                      <div className="survey">
-                         <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=n7L3RQCxQUyAT7NBighZStjAWTIFlutChq8ZZEGLLMdUNTJOMEw5TkRPWUExTUREQzRLR0FDV0FBVi4u" 
-                         target="_blank" 
+                         <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=n7L3RQCxQUyAT7NBighZStjAWTIFlutChq8ZZEGLLMdUNTJOMEw5TkRPWUExTUREQzRLR0FDV0FBVi4u"
+                         target="_blank"
                          rel="noopener noreferrer">
                              <button type="button" className="btn btn-warning">Give us feedback!</button>
                          </a>

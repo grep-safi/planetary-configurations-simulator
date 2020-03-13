@@ -399,46 +399,67 @@ export default class MainView extends React.Component {
             throughSun.y
         );
 
-        // let xS = 17;
+        let xS = 17;
+        let angleShift = 30;
 
-        // this.drawArrow(this.arrowToSun, throughSun, xS, 1);
-        // this.drawArrow(this.arrowToSun, throughSun, xS, -1);
+        this.drawArrow(this.arrowToTarget, throughTarget, angleShift);
+        this.drawArrow(this.arrowToTarget, throughTarget, -angleShift);
 
-        // this.drawArrow(this.arrowToTarget, throughTarget, -xS, 1);
-        // this.drawArrow(this.arrowToTarget, throughTarget, -xS, -1);
-
-        // this.drawArrow(this.arrowToTarget, throughTarget, 0.18, 10.2, 77);
-        // this.drawArrow(this.arrowToTarget, throughTarget, 0.18, -10.2, 103);
+        this.drawArrow(this.arrowToSun, throughSun, angleShift);
+        this.drawArrow(this.arrowToSun, throughSun, -angleShift);
     }
 
-    drawArrow(line, point, angleShift, angleReverse, rad) {
+    drawArrow(line, point, angleShift) {
         line.lineStyle(3.5, 0xa64e4e);
+        let tip = new PIXI.Point(point.x - this.observerPlanetContainer.x, this.observerPlanetContainer.y - point.y);
+        // let tip = new PIXI.Point(point.x - ORBIT_CENTER_X, ORBIT_CENTER_Y - point.y);
 
-        let startX = point.x;
-        let startY = point.y;
+        // console.log(tip.x, tip.y);
+        // console.log(this.observerPlanetContainer.x, this.observerPlanetContainer.y);
 
-        let receive = this.closer(point, angleShift, rad);
-        let endX = receive.x;
-        let endY = receive.y;
+        let angle = Math.atan2(tip.y, tip.x);
+        let length = 25;
 
-        let centrePointX = ((startX + endX) / 2.0);
-        let centrePointY = ((startY + endY) / 2.0);
+        let cv = this.convert(angle);
 
-        let angle = Math.atan2(endY - startY, endX - startX) + angleReverse;
-        let dist = 10;
+        let shift = cv + angleShift;
 
-        line.moveTo((Math.sin(angle) * dist + centrePointX), (-Math.cos(angle) * dist + centrePointY));
-        line.lineTo((-Math.sin(angle) * dist + centrePointX), (Math.cos(angle) * dist + centrePointY));
+        let xDiff = length * Math.cos(this.convertBack(shift));
+        let yDiff = length * Math.sin(this.convertBack(shift));
+
+        // console.log('angle of the thing', cv);
+
+        let halfX = tip.x + xDiff;
+        let halfY = tip.y + yDiff;
+
+        halfX = halfX + this.observerPlanetContainer.x;
+        halfY = this.observerPlanetContainer.y - halfY;
+
+        // halfX = halfX + ORBIT_CENTER_X;
+        // halfY = ORBIT_CENTER_Y - halfY;
+
+        line.moveTo(point.x, point.y);
+        line.lineTo(halfX, halfY);
     }
 
-    closer(point, angleShift, rad) {
-        let angle = Math.atan2(this.targetPlanetContainer.y, this.targetPlanetContainer.x) + angleShift;
+    convert(ang) {
+        let angle = ang;
+        if (angle < 0) {
+            let difference = Math.PI + angle;
+            angle = Math.PI + difference;
+        }
 
-        let radius = rad;
-        let y = radius * Math.sin(angle);
-        let x = radius * Math.cos(angle);
+        return ((angle * 180 / Math.PI) + 180) % 360;
+    }
 
-        return new PIXI.Point(point.x + x, point.y + y);
+    convertBack(ang) {
+        let angle = ang;
+        // if (angle < 0) {
+        //     let difference = Math.PI + angle;
+        //     angle = Math.PI + difference;
+        // }
+
+        return ang * Math.PI / 180;
     }
 
     getThroughTarget(arrowRadius, zoomedArrowRadius) {
