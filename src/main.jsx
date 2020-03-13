@@ -598,11 +598,43 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     changeValObserver(e) {
-        this.setState({holdObserver: e.target.value});
+        let enteredValue = e.target.value;
+
+        // This functionality ensures you cannoot
+        // enter the same radius value for both
+        // target and observer. But since the Prof didn't want it,
+        // it's commented out for now.
+
+        // let otherVal = this.state.holdTarget;
+        // if (enteredValue == otherVal) {
+        //     if (otherVal == 10.0) {
+        //         enteredValue -= 0.01;
+        //     } else {
+        //         enteredValue += 0.01;
+        //     }
+        // }
+
+        this.setState({holdObserver: enteredValue});
     }
 
     changeValTarget(e) {
-        this.setState({holdTarget: e.target.value});
+        let enteredValue = e.target.value;
+
+        // This functionality ensures you cannoot
+        // enter the same radius value for both
+        // target and observer. But since the Prof didn't want it,
+        // it's commented out for now.
+
+        // let otherVal = this.state.holdObserver;
+        // if (enteredValue == otherVal) {
+        //     if (otherVal == 10.0) {
+        //         enteredValue -= 0.01;
+        //     } else {
+        //         enteredValue += 0.01;
+        //     }
+        // }
+
+        this.setState({holdTarget: enteredValue});
     }
 }
 
