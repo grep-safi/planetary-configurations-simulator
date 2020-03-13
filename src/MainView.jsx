@@ -412,10 +412,6 @@ export default class MainView extends React.Component {
     drawArrow(line, point, angleShift) {
         line.lineStyle(3.5, 0xa64e4e);
         let tip = new PIXI.Point(point.x - this.observerPlanetContainer.x, this.observerPlanetContainer.y - point.y);
-        // let tip = new PIXI.Point(point.x - ORBIT_CENTER_X, ORBIT_CENTER_Y - point.y);
-
-        // console.log(tip.x, tip.y);
-        // console.log(this.observerPlanetContainer.x, this.observerPlanetContainer.y);
 
         let angle = Math.atan2(tip.y, tip.x);
         let length = 25;

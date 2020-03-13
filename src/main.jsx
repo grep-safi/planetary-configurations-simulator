@@ -29,7 +29,7 @@ class PlanetaryConfigSim extends React.Component {
             holdObserver: 1.00,
             holdTarget: 2.40,
             labelOrbits: true,
-            showElongation: true,
+            showElongation: false,
             zoomOut: false,
             startBtnText: 'start animation',
             isPlaying: false,
