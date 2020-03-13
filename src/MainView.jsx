@@ -624,6 +624,7 @@ export default class MainView extends React.Component {
         constellation.height = 40 * 2;
         constellation.alpha = 0.64;  // opacity
         constellation.anchor.set(0.5);
+        constellation.visible = false;
 
         // Triggers events that display name of constellation
         constellation.on('mousemove', this.onConstellationMove);
