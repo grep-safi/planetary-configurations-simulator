@@ -2,9 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import MainView from './MainView';
 import ZodiacStrip from './ZodiacStrip';
-import { RangeStepInput } from 'react-range-step-input';
-import { forceNumber, radToDeg, degToRad } from './utils';
-import { maxHeaderSize } from 'http';
+import { forceNumber } from './utils';
 
 class PlanetaryConfigSim extends React.Component {
     constructor(props) {
@@ -17,17 +15,24 @@ class PlanetaryConfigSim extends React.Component {
             radiusTargetPlanet: 2.40,
             radiusPixelObserver: 166.66,
             radiusPixelTarget: 400,
+            maximumPixelRadius: 400,
             observerMultiplier: Math.pow(1.0, -1.5),
             targetMultiplier:  Math.pow(2.4, -1.5),
             animationRate: 1.5,
             targetAngle: 0,
             sunAngle: -Math.PI,
+            elongationAngle: -Math.PI,
             optionObserver: 0,
             optionTarget: 0,
             observerName: 'observer planet',
             targetName: 'target planet',
             holdObserver: 1.00,
             holdTarget: 2.40,
+            labelOrbits: true,
+            showElongation: false,
+            zoomOut: false,
+            startBtnText: 'start animation',
+            isPlaying: false,
 	};
 
 	this.state = this.initialState;
@@ -37,24 +42,19 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     render() {
-        let startBtnText = 'start animation';
-        if (this.state.isPlaying) {
-            startBtnText = 'stop animation';
-        }
-
         return <React.Fragment>
-                 <nav className="navbar navbar-expand-md navbar-light bg-light d-flex justify-content-between">
-                   <span className="navbar-brand mb-0 h1">Planetary Configurations Simulator</span>
+                 <nav className="navbar navbar-expand-md navbar-light bg-dark d-flex justify-content-between">
+                   <span className="navbar-brand mb-0 text-light h1">Planetary Configurations Simulator</span>
 
                    <ul className="navbar-nav">
                      <li className="nav-item">
-                       <a className="nav-link" href="#" onClick={this.onResetClick.bind(this)}>Reset</a>
+                       <a className="nav-link text-light" href="#" onClick={this.onResetClick.bind(this)}>Reset</a>
                      </li>
                      <li className="nav-item">
-                       <a className="nav-link" href="#" data-toggle="modal" data-target="#helpModal">Help</a>
+                       <a className="nav-link text-light" href="#" data-toggle="modal" data-target="#helpModal">Help</a>
                      </li>
                      <li className="nav-item">
-                       <a className="nav-link" href="#" data-toggle="modal" data-target="#aboutModal">About</a>
+                       <a className="nav-link text-light" href="#" data-toggle="modal" data-target="#aboutModal">About</a>
                      </li>
                    </ul>
                  </nav>
@@ -70,16 +70,21 @@ class PlanetaryConfigSim extends React.Component {
                        stopAnimation={this.stopAnimation}
                        targetAngle={this.state.targetAngle}
                        sunAngle={this.state.sunAngle}
+                       elongationAngle={this.state.elongationAngle}
                        targetName={this.state.targetName}
                        observerName={this.state.observerName}
+                       labelOrbits={this.state.labelOrbits}
+                       showElongation={this.state.showElongation}
+                       zoomOut={this.state.zoomOut}
                      />
                    </div>
                    <div className="rowx">
                      <div className="col">
-                       <h4>Orbit Sizes</h4>
-                       <div className="observerText">
-                         <label htmlFor="radObserverPlanetRange">radius of observer planet's orbit:</label>
+                       <h4 id="text">Orbit Sizes</h4>
+                       <div className="radiusText">
+                         <label htmlFor="radObserverPlanetRange" id="text">Radius of observer planet's orbit (AU):</label>
                        </div>
+
                        <div className="observerInput">
                          <form onSubmit={this.onSubmitObserver.bind(this)}>
                            <input
@@ -116,11 +121,12 @@ class PlanetaryConfigSim extends React.Component {
                            <option value={4}>Mars</option>
                            <option value={5}>Jupiter</option>
                            <option value={6}>Saturn</option>
+                           <option value={7}>Arbitrary Observer</option>
                          </select>
                        </div>
 
-                       <div className="targetText">
-                         <label htmlFor="radTargetPlanetRange">radius of target planet's orbit:</label>
+                       <div className="radiusText">
+                         <label htmlFor="radTargetPlanetRange" id="text">Radius of target planet's orbit (AU):</label>
                        </div>
                        <div className="targetInput">
                          <form onSubmit={this.onSubmitTarget.bind(this)}>
@@ -157,21 +163,22 @@ class PlanetaryConfigSim extends React.Component {
                            <option value={4}>Mars</option>
                            <option value={5}>Jupiter</option>
                            <option value={6}>Saturn</option>
+                           <option value={7}>Arbitrary Target</option>
                          </select>
                        </div>
                      </div>
 
                      <div className="col">
-                       <h4>Animation Control</h4>
+                       <h4 id="text">Animation Control</h4>
                        <div className="animationText">
-                         <label htmlFor="diamRange">speed:</label>
+                         <label htmlFor="diamRange" id="text">Speed:</label>
                        </div>
                        <div className="animationSlider">
                          <input
                            type="range"
                            step={0.1}
                            min={0.1}
-                           max={2 * Math.PI}
+                           max={Math.PI}
                            value={this.state.animationRate}
                            onChange={this.onAnimationRateChange.bind(this)}
                          />
@@ -180,32 +187,57 @@ class PlanetaryConfigSim extends React.Component {
                          <button type="button"
                                  className="btn btn-primary btn-sm"
                                  onClick={this.onStartClick.bind(this)}>
-                           {startBtnText}
+                           {this.state.startBtnText}
                          </button>
                        </div>
-
                      </div>
-                     <div>
-                       <div className="toggleFeatures">
+
+                     <div className="controls">
+
+                       <div className="custom-control custom-checkboxes">
                          <input type="checkbox"
-                                name="elongationDisplay"
-                                id="elongToggle" />
-                         <label htmlFor="elongationDisplay">
+                                onChange={this.showOrbits.bind(this)}
+                                checked={this.state.labelOrbits}
+                                id="orbits-display"
+                         />
+                         <label className="" htmlFor="orbits-display" id="text">
+                           Label Orbits
+                         </label>
+                       </div>
+
+                       <div className="custom-control custom-checkbox">
+                         <input type="checkbox"
+                                onChange={this.showElongationAngle.bind(this)}
+                                checked={this.state.showElongation}
+                                id="angle-display"
+                         />
+                         <label className="" htmlFor="angle-display" id="text">
                            Show Elongation Angle
                          </label>
                        </div>
 
-                       <div className="toggleFeatures">
+                       <div className="custom-control custom-checkbox">
                          <input type="checkbox"
-                                name="elongationDisplay"
-                                id="elongToggle" />
-                         <label htmlFor="elongationDisplay">
-                           Label orbits
+                                onChange={this.displayZoomOut.bind(this)}
+                                checked={this.state.zoomOut}
+                                id="zoom-out-display"
+                         />
+                         <label className="" htmlFor="zoom-out-display" id="text">
+                           Zoom Out to View Constellations
                          </label>
                        </div>
+
+                     </div>
+                     <div className="survey">
+                         <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=n7L3RQCxQUyAT7NBighZStjAWTIFlutChq8ZZEGLLMdUNTJOMEw5TkRPWUExTUREQzRLR0FDV0FBVi4u" 
+                         target="_blank" 
+                         rel="noopener noreferrer">
+                             <button type="button" className="btn btn-warning">Give us feedback!</button>
+                         </a>
                      </div>
 
                    </div>
+
 		   <div className="bot">
 		     <ZodiacStrip
                        speed={this.state.animationRate}
@@ -252,17 +284,24 @@ class PlanetaryConfigSim extends React.Component {
     onStartClick() {
         if (!this.state.isPlaying) {
             this.raf = requestAnimationFrame(this.animate.bind(this));
-            this.setState({isPlaying: true});
+            this.setState({
+                isPlaying: true,
+                startBtnText: 'stop animation'
+            });
         } else {
             this.stopAnimation();
-            this.setState({isPlaying: false});
+            this.setState({
+                isPlaying: false,
+                startBtnText: 'start animation'
+            });
         }
     }
 
-    updateAngles(targetAng, sunAng) {
+    updateAngles(targetAng, sunAng, elongationAng) {
         this.setState({
             targetAngle: targetAng,
             sunAngle: sunAng,
+            elongationAngle: elongationAng
         });
     }
 
@@ -347,10 +386,7 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     onPresetSelectObserver(e) {
-        this.setState({
-            optionObserver: e.target.value
-        });
-
+        let name = "";
         if (e.target.value == 0) {
             this.onObserverPlanetRadiusChange(1.00);
             name = "observer planet";
@@ -372,19 +408,18 @@ class PlanetaryConfigSim extends React.Component {
         } else if (e.target.value == 6) {
             this.onObserverPlanetRadiusChange(9.54);
             name = "observer (saturn)";
+        } else {
+            name = "observer planet";
         }
 
         this.setState({
             observerName: name,
+            optionObserver: e.target.value
         });
 
     }
 
     onPresetSelectTarget(e) {
-        this.setState({
-            optionTarget: e.target.value,
-        });
-
         let name = "";
 
         if (e.target.value == 0) {
@@ -408,15 +443,23 @@ class PlanetaryConfigSim extends React.Component {
         } else if (e.target.value == 6) {
             this.onTargetPlanetRadiusChange(9.54);
             name = "target (saturn)";
+        } else if (e.target.value == 7) {
+            name = "target planet";
         }
 
         this.setState({
             targetName: name,
+            optionTarget: e.target.value,
         });
     }
 
-    onObserverPlanetRadiusChange(e) {
+    onObserverPlanetRadiusChange(e, maxPix) {
         let au = 0;
+
+        let maximumPixel = this.state.maximumPixelRadius;
+        if (maxPix) {
+            maximumPixel = maxPix;
+        }
 
         if (typeof(e) === 'object') {
     	    au = e.target.value;
@@ -432,31 +475,40 @@ class PlanetaryConfigSim extends React.Component {
         }
 
         if (au >= this.state.radiusTargetPlanet) {
-            this.changeTarget(au);
+            this.changeTarget(au, maximumPixel);
         } else {
-            let ratio = (au / this.state.radiusTargetPlanet) * 400;
+            let ratio = (au / this.state.radiusTargetPlanet) * maximumPixel;
             this.setState({
                 radiusPixelObserver: forceNumber(ratio),
                 radiusObserverPlanet: forceNumber(au),
-                radiusPixelTarget: 400,
+                radiusPixelTarget: maximumPixel,
             });
         }
+
+        this.setState({
+            optionObserver: 7,
+        });
 
         this.updateMultiplier();
     }
 
-    changeObserver(au) {
-        let ratio = (this.state.radiusObserverPlanet / au) * 400;
+    changeObserver(au, maximumPixel) {
+        let ratio = (this.state.radiusObserverPlanet / au) * maximumPixel;
 
         this.setState({
             radiusTargetPlanet: forceNumber(au),
             radiusPixelObserver: forceNumber(ratio),
-            radiusPixelTarget: 400,
+            radiusPixelTarget: maximumPixel,
         });
     }
 
-    onTargetPlanetRadiusChange(e) {
+    onTargetPlanetRadiusChange(e, maxPix) {
         let au = 0;
+
+        let maximumPixel = this.state.maximumPixelRadius;
+        if (maxPix) {
+            maximumPixel = maxPix;
+        }
 
         if (typeof(e) === 'object') {
     	    au = e.target.value;
@@ -472,27 +524,57 @@ class PlanetaryConfigSim extends React.Component {
         }
 
         if (au >= this.state.radiusObserverPlanet) {
-            this.changeObserver(au);
+            this.changeObserver(au, maximumPixel);
         } else {
-            let ratio = (au / this.state.radiusObserverPlanet) * 400;
+            let ratio = (au / this.state.radiusObserverPlanet) * maximumPixel;
             this.setState({
             	radiusPixelTarget: forceNumber(ratio),
                 radiusTargetPlanet: forceNumber(au),
-                radiusPixelObserver: 400,
+                radiusPixelObserver: maximumPixel,
             });
         }
+
+        this.setState({
+            optionTarget: 7
+        });
 
         this.updateMultiplier();
     }
 
-    changeTarget(au) {
-        let ratio = (this.state.radiusTargetPlanet / au) * 400;
+    changeTarget(au, maximumPixel) {
+        let ratio = (this.state.radiusTargetPlanet / au) * maximumPixel;
 
         this.setState({
             radiusObserverPlanet: forceNumber(au),
             radiusPixelTarget: forceNumber(ratio),
-            radiusPixelObserver: 400,
+            radiusPixelObserver: maximumPixel,
         });
+    }
+
+    showOrbits(e) {
+        this.setState({
+            labelOrbits: !this.state.labelOrbits
+        });
+    }
+
+    showElongationAngle(e) {
+        this.setState({
+            showElongation: !this.state.showElongation
+        });
+    }
+
+    displayZoomOut(e) {
+        let newRad = 400;
+        if (!this.state.zoomOut) {
+            newRad = 175;
+        }
+
+        this.setState({
+            zoomOut: !this.state.zoomOut,
+            maximumPixelRadius: newRad,
+        });
+
+        this.onTargetPlanetRadiusChange(this.state.radiusTargetPlanet, newRad);
     }
 
     stopAnimation() {

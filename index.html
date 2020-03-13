@@ -10,51 +10,53 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet" />
     <style type="text/css">
         html {
-            background: rgb(17, 62, 68);
+            background: rgb(51,57,64);
         }
 
         body>.container {
-            background: rgb(17, 62, 68);
+            background: rgb(51,57,64);
             width: 960px;
         }
 
         #sim-container {
-            background: rgb(17, 62, 68);
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            background: rgb(51,57,64);
             user-select: none;
             width: 930px;
-        } 
+        }
 
         .rowx {
-            background: rgb(17, 62, 68);
+            background: rgb(51,57,64);
             display: inline-block;
             width: 307px;
         }
 
-        .col {
-            background: rgb(120, 165, 110);
-            margin-bottom: 10px;
-            border: 2px solid rgb(5, 37, 56);
+        .controls {
+            background: rgb(212,212,212);
+            margin-bottom: 15px;
+            border: 2px solid rgb(51,57,64);
         }
 
-        .col .presets {
+        .col {
+            background: rgb(212,212,212);
+            margin-bottom: 10px;
+            border: 2px solid rgb(51,57,64);
+        }
+
+        .col .presets .controls {
+
             display: inline-block;
         }
 
         .bot {
             position: relative;
+            float: left;
             left: 16px;
         }
 
-         /*
-        .form-inline {
-	        
-	    }
-        */
+        .survey {
+            position: absolute;
+        }
+
         .input[type="number"] {
             width: 52px;
             border-radius: 2px;
@@ -129,12 +131,20 @@
             max-width: 30%;
         }
 
+        .radiusText label {
+            font-size: 15px;
+        }
+
         #radP #radText {
             display: inline-block;
         }
         
+        #text {
+            color: rgb(36,27,35);
+        }
+
         body {
-            background: rgb(17, 62, 68);
+            background: rgb(51,57,64);
         }
 
         /* .increment-area button {
@@ -143,11 +153,11 @@
        } */
 
         .MainView>canvas {
-
             background: rgb(20, 20, 170);
             width: 600px;
             height: 460px;
         }
+        
 
         
     </style>
@@ -176,7 +186,7 @@
                         This simulator models the movement of planets around the sun in a simplified Copernican model
                         of the solar system. 
                         <br><br>
-                        Special emphasis is placed on the elongation angle and associated events.
+                        TIP: View the web page at 90% zoom (if needed).
                     </p>
                 </div>
             </div>
