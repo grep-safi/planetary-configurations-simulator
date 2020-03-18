@@ -231,7 +231,7 @@ class PlanetaryConfigSim extends React.Component {
 
                     <div className="controls">
                         <div className="custom-control custom-checkboxes">
-                            <p>{this.state.days}</p>
+                            <p>Earth Days Elapsed: {this.state.days.toFixed(0).slice(-6)}</p>
                         </div>
                     </div>
 
@@ -278,7 +278,8 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     incrementDays(delta) {
-        let newDaysPassed = 50 * delta * this.state.observerMultiplier;
+        let newDaysPassed = 0.665 * delta * this.state.observerMultiplier;
+        console.log('angle', this.state.observerPlanetAngle * 180 / Math.PI);
         console.log('new days passed', newDaysPassed);
         return  newDaysPassed;
     }
@@ -289,7 +290,7 @@ class PlanetaryConfigSim extends React.Component {
         this.setState(prevState => ({
             observerPlanetAngle: me.incrementObserverPlanetAngle(prevState.observerPlanetAngle, 0.0115 * this.state.animationRate),
             targetPlanetAngle: me.incrementTargetPlanetAngle(prevState.targetPlanetAngle, 0.0115 * this.state.animationRate),
-            days: prevState.days + me.incrementDays(0.0115 * this.state.animationRate)
+            days: prevState.days + me.incrementDays(this.state.animationRate)
         }));
 
         this.raf = requestAnimationFrame(this.animate.bind(this));
@@ -358,7 +359,7 @@ class PlanetaryConfigSim extends React.Component {
             isPlaying: false,
             observerPlanetAngle: newAngle,
             targetPlanetAngle: newTargetPlanet,
-            days: this.state.days + Math.abs(newAngle - prevObserverPlanetAng) * 100
+            days: this.state.days + Math.abs(newAngle - prevObserverPlanetAng) * 29.85
         });
     }
 
@@ -391,7 +392,7 @@ class PlanetaryConfigSim extends React.Component {
             isPlaying: false,
             targetPlanetAngle: newAngle,
             observerPlanetAngle: newObserverPlanet,
-            days: this.state.days + Math.abs(newObserverPlanet - prevObserverPlanetAng) * 100
+            days: this.state.days + Math.abs(newObserverPlanet - prevObserverPlanetAng) * 29.85
         });
     }
 
