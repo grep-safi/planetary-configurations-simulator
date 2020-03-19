@@ -399,7 +399,6 @@ export default class MainView extends React.Component {
             throughSun.y
         );
 
-        let xS = 17;
         let angleShift = 30;
 
         this.drawArrow(this.arrowToTarget, throughTarget, angleShift);
@@ -423,16 +422,11 @@ export default class MainView extends React.Component {
         let xDiff = length * Math.cos(this.convertBack(shift));
         let yDiff = length * Math.sin(this.convertBack(shift));
 
-        // console.log('angle of the thing', cv);
-
         let halfX = tip.x + xDiff;
         let halfY = tip.y + yDiff;
 
         halfX = halfX + this.observerPlanetContainer.x;
         halfY = this.observerPlanetContainer.y - halfY;
-
-        // halfX = halfX + ORBIT_CENTER_X;
-        // halfY = ORBIT_CENTER_Y - halfY;
 
         line.moveTo(point.x, point.y);
         line.lineTo(halfX, halfY);
@@ -449,12 +443,6 @@ export default class MainView extends React.Component {
     }
 
     convertBack(ang) {
-        let angle = ang;
-        // if (angle < 0) {
-        //     let difference = Math.PI + angle;
-        //     angle = Math.PI + difference;
-        // }
-
         return ang * Math.PI / 180;
     }
 
