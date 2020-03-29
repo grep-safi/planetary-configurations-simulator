@@ -180,7 +180,7 @@ class PlanetaryConfigSim extends React.Component {
                                 type="range"
                                 step={0.1}
                                 min={0.1}
-                                max={Math.PI}
+                                max={Math.PI * 1.5}
                                 value={this.state.animationRate}
                                 onChange={this.onAnimationRateChange.bind(this)}
                             />
@@ -232,7 +232,7 @@ class PlanetaryConfigSim extends React.Component {
                     <div className="" id="days">
                         <div className="custom-control custom-checkboxes">
                             <div id="elapsedText">
-                                <h5>Time Elapsed: {this.state.days.toFixed(0)}</h5>
+                                <h6>Time Elapsed: {this.state.days.toFixed(0)} days</h6>
                             </div>
                             <div id="resetButton">
                                 <button type="button"
@@ -272,7 +272,8 @@ class PlanetaryConfigSim extends React.Component {
 
     resetDaysElapsed() {
         this.setState({
-            thetaShift: this.state.observerPlanetAngle
+            thetaShift: this.state.observerPlanetAngle,
+            days: 0
         })
     }
 
