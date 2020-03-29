@@ -34,7 +34,8 @@ class PlanetaryConfigSim extends React.Component {
             startBtnText: 'start animation',
             isPlaying: false,
             days: 0,
-            thetaShift: 0
+            thetaShift: 0,
+            cyclesCompleted: 0
         };
 
         this.state = this.initialState;
@@ -229,10 +230,14 @@ class PlanetaryConfigSim extends React.Component {
                         </div>
                     </div>
 
-                    <div className="" id="days">
+                    <div id="days">
                         <div className="custom-control custom-checkboxes">
                             <div id="elapsedText">
-                                <h6>Time Elapsed: {this.state.days.toFixed(0)} days</h6>
+                                <p>
+                                    Days Elapsed: {this.state.days.toFixed(0)}
+                                    <br />
+                                    Years elapsed: {this.state.cyclesCompleted}
+                                </p>
                             </div>
                             <div id="resetButton">
                                 <button type="button"
@@ -277,17 +282,30 @@ class PlanetaryConfigSim extends React.Component {
         })
     }
 
+    updateCycles(prevAngle, newAngle) {
+        if (newAngle >= 0 && prevAngle < 0) {
+            this.setState({
+                cyclesCompleted: this.state.cyclesCompleted + 1,
+            })
+        } else if (prevAngle >= 0 && newAngle < 0) {
+            this.setState({
+                cyclesCompleted: this.state.cyclesCompleted - 1,
+            })
+        }
+    }
+
     incrementObserverPlanetAngle(n, inc) {
         const newAngle = n + (this.state.observerMultiplier * inc);
         if (newAngle > Math.PI) {
             return newAngle * -1;
         }
+
+        this.updateCycles(this.state.observerPlanetAngle, newAngle);
         return newAngle;
     }
 
     incrementTargetPlanetAngle(n, inc) {
         const newAngle = n + (this.state.targetMultiplier * inc);
-        console.log('this is the new angle', n * 180 / Math.PI);
         if (newAngle > Math.PI) {
             return newAngle * -1;
         }
@@ -313,6 +331,7 @@ class PlanetaryConfigSim extends React.Component {
             targetPlanetAngle: me.incrementTargetPlanetAngle(prevState.targetPlanetAngle, 0.0115 * this.state.animationRate),
             days: me.incrementDays()
         }));
+        console.log(`new obs angle: ${this.state.observerPlanetAngle * 180 / Math.PI}, new target angle: ${this.state.targetPlanetAngle * 180 / Math.PI}`);
 
         this.raf = requestAnimationFrame(this.animate.bind(this));
     }
@@ -376,12 +395,14 @@ class PlanetaryConfigSim extends React.Component {
             newTargetPlanet = 2 * ninetyDegrees;
         }
 
+        this.updateCycles(prevObserverPlanetAng, newAng);
         this.setState({
             isPlaying: false,
             observerPlanetAngle: newAngle,
             targetPlanetAngle: newTargetPlanet,
             days: this.incrementDays()
         });
+        console.log(`new obs angle: ${this.state.observerPlanetAngle * 180 / Math.PI}, new target angle: ${this.state.targetPlanetAngle * 180 / Math.PI}`);
     }
 
     onTargetPlanetAngleUpdate(newAngle) {
@@ -408,12 +429,14 @@ class PlanetaryConfigSim extends React.Component {
             newObserverPlanet = 2 * ninetyDegrees;
         }
 
+        this.updateCycles(this.state.observerPlanetAngle, newObserverPlanet);
         this.setState({
             isPlaying: false,
             targetPlanetAngle: newAngle,
             observerPlanetAngle: newObserverPlanet,
             days: this.incrementDays()
         });
+        console.log(`new obs angle: ${this.state.observerPlanetAngle * 180 / Math.PI}, new target angle: ${this.state.targetPlanetAngle * 180 / Math.PI}`);
     }
 
     onAnimationRateChange(e) {
