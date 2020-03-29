@@ -33,7 +33,8 @@ class PlanetaryConfigSim extends React.Component {
             zoomOut: false,
             startBtnText: 'start animation',
             isPlaying: false,
-            days: 0
+            days: 0,
+            thetaShift: 0
         };
 
         this.state = this.initialState;
@@ -228,13 +229,22 @@ class PlanetaryConfigSim extends React.Component {
                         </div>
                     </div>
 
-                    <div className="controls">
+                    <div className="" id="days">
                         <div className="custom-control custom-checkboxes">
-                            <p>Earth Days Elapsed: {this.state.days.toFixed(0).slice(-6)}</p>
+                            <div id="elapsedText">
+                                <h5>Time Elapsed: {this.state.days.toFixed(0)}</h5>
+                            </div>
+                            <div id="resetButton">
+                                <button type="button"
+                                        className="btn btn-primary btn-sm"
+                                        onClick={() => this.resetDaysElapsed()}>
+                                    Reset days
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="survey">
+                    <div id="survey">
                         <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=n7L3RQCxQUyAT7NBighZStjAWTIFlutChq8ZZEGLLMdUNTJOMEw5TkRPWUExTUREQzRLR0FDV0FBVi4u"
                            target="_blank"
                            rel="noopener noreferrer">
@@ -260,6 +270,12 @@ class PlanetaryConfigSim extends React.Component {
         </React.Fragment>;
     }
 
+    resetDaysElapsed() {
+        this.setState({
+            thetaShift: this.state.observerPlanetAngle
+        })
+    }
+
     incrementObserverPlanetAngle(n, inc) {
         const newAngle = n + (this.state.observerMultiplier * inc);
         if (newAngle > Math.PI) {
@@ -279,6 +295,7 @@ class PlanetaryConfigSim extends React.Component {
 
     incrementDays() {
         let ang = this.state.observerPlanetAngle;
+        ang -= this.state.thetaShift;
         let elapsed = (ang / (2 * Math.PI)) * 365;
         if (ang < 0) {
             elapsed = ((2 * Math.PI + ang) / (2 * Math.PI)) * 365;
