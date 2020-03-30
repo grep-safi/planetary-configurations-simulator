@@ -234,9 +234,7 @@ class PlanetaryConfigSim extends React.Component {
                         <div className="custom-control custom-checkboxes">
                             <div id="elapsedText">
                                 <p>
-                                    Days Elapsed: {this.getDaysElapsed().toFixed(0)}
-                                    <br />
-                                    Years elapsed: {this.getYear()}
+                                    {this.getYear()} years and {this.getDaysElapsed().toFixed(0)} days
                                 </p>
                             </div>
                             <div id="resetButton">
@@ -259,7 +257,7 @@ class PlanetaryConfigSim extends React.Component {
 
                 </div>
 
-                <div className="bot">
+                <div className="zodiacStrip">
                     <ZodiacStrip
                         speed={this.state.animationRate}
                         observerPlanetAngle={this.state.observerPlanetAngle}
@@ -275,27 +273,17 @@ class PlanetaryConfigSim extends React.Component {
         </React.Fragment>;
     }
 
-    componentDidMount() {
-        console.log(`mounting`);
-        // this.incrementObserverPlanetAngle(this.state.observerPlanetAngle,
-        //     0.000000000001);
-        // let s1 = -0.00;
-        // let s2 = 0.01;
-        // this.updateCycles(this.state.observerPlanetAngle - s1, this.state.observerPlanetAngle - s2);
-    }
-
     getDaysElapsed() {
         if (this.state.days === 0) {
             return 0;
         }
-        return this.state.cyclesCompleted <= 0 ? this.state.days - 365 : this.state.days;
+        let orbitalPeriod = 365 * (1 / this.state.observerMultiplier);
+        return this.state.cyclesCompleted <= 0 ? this.state.days - orbitalPeriod : this.state.days;
     }
 
     getYear() {
         let year = this.state.cyclesCompleted;
-        console.log(`year: ${year}`);
         return year < 0 ? (year) : (year - 1 === -1 ? 0 : year - 1);
-        // return year < 0 ? (year + 1) : (year- 1 === -1 ? 0 : year - 1);
     }
 
     resetDaysElapsed() {
@@ -311,32 +299,18 @@ class PlanetaryConfigSim extends React.Component {
         let adjustedAngle = (angle) => angle > 0 ? angle : (2 * Math.PI + angle);
 
         // Returns true if in the right quadrant
-        let inFirstQuadrant = (angle) => {
-            // console.log(`first quadrant ${angle} is less than ${2 * Math.PI} and greater than ${3 * Math.PI / 2}`);
-            return (angle > 0) && (angle < (Math.PI / 2));
-        };
-
-        let inFourthQuadrant = (angle) => {
-            // console.log(`fourth quadrant ${angle} is less than ${2 * Math.PI} and greater than ${3 * Math.PI / 2}`);
-            return (angle < (2 * Math.PI) + 0.1) && (angle > (3 * Math.PI / 2));
-        };
+        let inFirstQuadrant = (angle) => (angle > 0) && (angle < (Math.PI / 2));
+        let inFourthQuadrant = (angle) => (angle < (2 * Math.PI) + 0.1) && (angle > (3 * Math.PI / 2));
 
         let newAngle = adjustedAngle(newAng - this.state.thetaShift);
         let prevAngle = adjustedAngle(prevAng - this.state.thetaShift);
 
-        // console.log(`newAngle: ${newAng * 180 / Math.PI}, prevAng: ${prevAng * 180 / Math.PI}`);
+        let newCycleCount = this.state.cyclesCompleted;
 
-        if (inFirstQuadrant(newAngle) && inFourthQuadrant(prevAngle)) {
-            console.log(`plus yearrrrrrrrrrrrrr ${this.state.cyclesCompleted}`);
-            this.setState({
-                cyclesCompleted: this.state.cyclesCompleted + 1,
-            })
-        } else if (inFirstQuadrant(prevAngle) && inFourthQuadrant(newAngle)) {
-            console.log(`minus yearrrrrrrrrrrrrr ${this.state.cyclesCompleted}`);
-            this.setState({
-                cyclesCompleted: this.state.cyclesCompleted - 1,
-            })
-        }
+        if (inFirstQuadrant(newAngle) && inFourthQuadrant(prevAngle)) { newCycleCount += 1; }
+        else if (inFirstQuadrant(prevAngle) && inFourthQuadrant(newAngle)) { newCycleCount -= 1; }
+
+        this.setState({ cyclesCompleted: newCycleCount });
     }
 
     incrementDays() {
