@@ -539,7 +539,7 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     onObserverPlanetRadiusChange(e, maxPix) {
-        let au = 0;
+        let au;
 
         let maximumPixel = this.state.maximumPixelRadius;
         if (maxPix) {
@@ -574,6 +574,7 @@ class PlanetaryConfigSim extends React.Component {
             optionObserver: 7,
         });
 
+        this.resetDaysElapsed();
         this.updateMultiplier();
     }
 
@@ -685,7 +686,7 @@ class PlanetaryConfigSim extends React.Component {
     changeValObserver(e) {
         let enteredValue = e.target.value;
 
-        // This functionality ensures you cannoot
+        // This functionality ensures you cannot
         // enter the same radius value for both
         // target and observer. But since the Prof didn't want it,
         // it's commented out for now.
@@ -705,7 +706,7 @@ class PlanetaryConfigSim extends React.Component {
     changeValTarget(e) {
         let enteredValue = e.target.value;
 
-        // This functionality ensures you cannoot
+        // This functionality ensures you cannot
         // enter the same radius value for both
         // target and observer. But since the Prof didn't want it,
         // it's commented out for now.
