@@ -461,7 +461,6 @@ class PlanetaryConfigSim extends React.Component {
             observerPlanetAngle: newObserverPlanet,
             days: this.incrementDays()
         });
-        // console.log(`new obs angle: ${this.state.observerPlanetAngle * 180 / Math.PI}, new target angle: ${this.state.targetPlanetAngle * 180 / Math.PI}`);
     }
 
     onAnimationRateChange(e) {
@@ -471,7 +470,7 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     onPresetSelectObserver(e) {
-        let name = "";
+        let name;
         if (e.target.value == 0) {
             this.onObserverPlanetRadiusChange(1.00);
             name = "observer planet";
@@ -505,7 +504,7 @@ class PlanetaryConfigSim extends React.Component {
     }
 
     onPresetSelectTarget(e) {
-        let name = "";
+        let name;
 
         if (e.target.value == 0) {
             this.onTargetPlanetRadiusChange(2.40);
