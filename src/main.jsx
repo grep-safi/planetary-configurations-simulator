@@ -31,7 +31,7 @@ class PlanetaryConfigSim extends React.Component {
             labelOrbits: true,
             showElongation: false,
             zoomOut: false,
-            startBtnText: 'start animation',
+            startBtnText: 'Play animation',
             isPlaying: false,
             days: 0,
             thetaShift: 0,
@@ -415,13 +415,13 @@ class PlanetaryConfigSim extends React.Component {
             this.raf = requestAnimationFrame(this.animate.bind(this));
             this.setState({
                 isPlaying: true,
-                startBtnText: 'stop animation'
+                startBtnText: 'Pause animation'
             });
         } else {
             this.stopAnimation();
             this.setState({
                 isPlaying: false,
-                startBtnText: 'start animation'
+                startBtnText: 'Play animation'
             });
         }
     }
@@ -464,9 +464,11 @@ class PlanetaryConfigSim extends React.Component {
         let newTargetPlanet = (this.state.targetPlanetAngle + diff);
 
         if (newTargetPlanet >= Math.PI) {
-            newTargetPlanet = -2 * ninetyDegrees;
+            let overflow = newTargetPlanet - Math.PI;
+            newTargetPlanet = -2 * ninetyDegrees + overflow;
         } else if (newTargetPlanet <= -Math.PI) {
-            newTargetPlanet = 2 * ninetyDegrees;
+            let overflow = newTargetPlanet - (-Math.PI);
+            newTargetPlanet = 2 * ninetyDegrees + overflow;
         }
 
         this.updateCycles(prevObserverPlanetAng, newAng);
@@ -476,7 +478,6 @@ class PlanetaryConfigSim extends React.Component {
             targetPlanetAngle: newTargetPlanet,
             days: this.incrementDays()
         });
-        // console.log(`new obs angle: ${this.state.observerPlanetAngle * 180 / Math.PI}, new target angle: ${this.state.targetPlanetAngle * 180 / Math.PI}`);
     }
 
     onTargetPlanetAngleUpdate(newAngle) {
@@ -497,10 +498,13 @@ class PlanetaryConfigSim extends React.Component {
         this.updateMultiplier();
         diff *= this.state.observerMultiplier / this.state.targetMultiplier;
         let newObserverPlanet = (this.state.observerPlanetAngle + diff);
+
         if (newObserverPlanet >= Math.PI) {
-            newObserverPlanet = -2 * ninetyDegrees;
+            let overflow = newObserverPlanet - Math.PI;
+            newObserverPlanet = -2 * ninetyDegrees + overflow;
         } else if (newObserverPlanet <= -Math.PI) {
-            newObserverPlanet = 2 * ninetyDegrees;
+            let overflow = newObserverPlanet - (-Math.PI);
+            newObserverPlanet = 2 * ninetyDegrees + overflow;
         }
 
         this.updateCycles(this.state.observerPlanetAngle, newObserverPlanet);
