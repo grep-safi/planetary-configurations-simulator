@@ -283,22 +283,6 @@ class PlanetaryConfigSim extends React.Component {
         let earthDaysElapsed = ((orbitYears * orbitalPeriod) + orbitDays);
 
         return earthDaysElapsed;
-
-        // if (this.state.days === 0) {
-        //     return 0;
-        // }
-
-
-        // let daysElapsed;
-        // if (this.state.cyclesCompleted <= 0) {
-        //     daysElapsed = this.state.days - orbitalPeriod;
-        //     daysElapsed += this.getYear() * orbitalPeriod;
-        //     return daysElapsed % 365;
-        // }
-
-        // daysElapsed = this.state.days;
-        // daysElapsed += this.getYear() * orbitalPeriod;
-        // return daysElapsed % 365;
     }
 
     getEarthYearsElapsed() {
